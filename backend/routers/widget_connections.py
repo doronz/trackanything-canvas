@@ -398,9 +398,9 @@ async def create_connection_with_ai(request: CreateConnectionWithAIRequest, db: 
     # Generate unique trace ID for this flow
     trace_id = str(uuid.uuid4())[:8]
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     log_with_location(f"🚀 WIDGET CONNECTION FLOW STARTED", trace_id)
-    print(f"{'='*80}")
+    print(f"{'=' * 80}")
     log_with_location(f"⏰ Timestamp: {datetime.utcnow().isoformat()}", trace_id)
     log_with_location(f"📊 Request Details:", trace_id)
     log_with_location(f"  - Source Widget ID: {request.source_widget_id}", trace_id)
@@ -408,7 +408,7 @@ async def create_connection_with_ai(request: CreateConnectionWithAIRequest, db: 
     log_with_location(f"  - AI Config ID: {request.ai_config_id or '(default)'}", trace_id)
     log_with_location(f"  - Position: x={request.position.get('x')}, y={request.position.get('y')}", trace_id)
     log_with_location(f"  - Direction: {request.direction or '(none)'}", trace_id)
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
     # Verify source widget exists
     log_with_location(f"🔍 Step 1: Verifying source widget...", trace_id)
@@ -575,16 +575,16 @@ async def create_connection_with_ai(request: CreateConnectionWithAIRequest, db: 
         )
         log_with_location(f"  - Direction: {request.direction or 'right'}\n", trace_id)
 
-        print(f"{'='*80}")
+        print(f"{'=' * 80}")
         log_with_location(f"🎉 WIDGET CONNECTION FLOW COMPLETED SUCCESSFULLY", trace_id)
-        print(f"{'='*80}")
+        print(f"{'=' * 80}")
         log_with_location(f"⏱️  Duration: Complete", trace_id)
         log_with_location(f"📊 Summary:", trace_id)
         log_with_location(f"  - Created Widget ID: {target_widget.id}", trace_id)
         log_with_location(f"  - Created Connection ID: {connection.id}", trace_id)
         log_with_location(f"  - AI Provider Used: {ai_config.provider} ({ai_config.model})", trace_id)
         log_with_location(f"  - Transformation Applied: {'Yes' if request.transformation_prompt else 'No'}", trace_id)
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
 
         return {
             "message": "Widget and connection created successfully",
@@ -608,7 +608,7 @@ async def create_connection_with_ai(request: CreateConnectionWithAIRequest, db: 
         log_with_location(f"  - Error Type: {type(e).__name__}", trace_id)
         log_with_location(f"  - Error Message: {str(e)}", trace_id)
         log_with_location(f"  - Rolling back database transaction...", trace_id)
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
         db.rollback()
         raise HTTPException(status_code=500, detail=f"AI conversion failed: {str(e)}")
 

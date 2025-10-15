@@ -355,7 +355,7 @@ class MCPServerScraper:
 
         # Enhance server information with GitHub data
         for i, server in enumerate(servers):
-            print(f"Processing {i+1}/{len(servers)}: {server.name}")
+            print(f"Processing {i + 1}/{len(servers)}: {server.name}")
 
             # Get GitHub repo info
             stars, last_updated = await self.get_github_repo_info(server.github_url)

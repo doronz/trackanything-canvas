@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const { dashboards, currentDashboardId, loading} = useSelector(
+  const { dashboards, currentDashboardId, loading } = useSelector(
     (state: RootState) => state.dashboard
   );
 
