@@ -1,7 +1,7 @@
-import { ReactNode, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/store';
+import { AppDispatch, RootState } from '@/store';
 import { setTheme } from '@/store/uiSlice';
+import { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -13,6 +13,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   // Apply theme to document
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
@@ -31,6 +33,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   // Load theme from localStorage on mount
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const savedTheme = localStorage.getItem('canvas-mcp-theme') as 'light' | 'dark';
     if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
       dispatch(setTheme(savedTheme));
@@ -39,6 +43,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   // Save theme to localStorage when it changes
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     localStorage.setItem('canvas-mcp-theme', theme);
   }, [theme]);
 

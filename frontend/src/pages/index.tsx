@@ -1,21 +1,21 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Head from 'next/head';
+import Canvas from '@/components/Canvas/Canvas';
+import ZoomControls from '@/components/Canvas/ZoomControls';
+import MainLayout from '@/components/Layout/MainLayout';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import StatusBar from '@/components/StatusBar/StatusBar';
+import Toolbar from '@/components/Toolbar/Toolbar';
 import { AppDispatch, RootState } from '@/store';
+import { fetchAIConfigs } from '@/store/aiConfigSlice';
 import { fetchDashboards, setCurrentDashboard } from '@/store/dashboardSlice';
 import { fetchMCPServers } from '@/store/mcpSlice';
-import { fetchAIConfigs } from '@/store/aiConfigSlice';
 import { fetchWidgets } from '@/store/widgetSlice';
-import MainLayout from '@/components/Layout/MainLayout';
-import Canvas from '@/components/Canvas/Canvas';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import Toolbar from '@/components/Toolbar/Toolbar';
-import StatusBar from '@/components/StatusBar/StatusBar';
-import ZoomControls from '@/components/Canvas/ZoomControls';
+import Head from 'next/head';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const { dashboards, currentDashboardId, loading } = useSelector(
+  const { dashboards, currentDashboardId, loading} = useSelector(
     (state: RootState) => state.dashboard
   );
 
@@ -87,4 +87,9 @@ export default function Home() {
       </MainLayout>
     </>
   );
+}
+
+// Disable pre-rendering to avoid SSR issues
+export async function getServerSideProps() {
+  return { props: {} };
 }

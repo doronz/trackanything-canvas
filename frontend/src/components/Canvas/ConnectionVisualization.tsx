@@ -224,7 +224,10 @@ export default function ConnectionVisualization({
       }
 
       // Use text color for connection lines (black in light mode, white in dark mode)
-      const textColor = document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000';
+      const textColor =
+        typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+          ? '#ffffff'
+          : '#000000';
 
       // Check if connection has AI transformation prompt
       // Look for transformation prompts in the AI conversion prompt field

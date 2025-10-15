@@ -1,13 +1,23 @@
-import type { AppProps } from 'next/app';
-import { Provider, useSelector } from 'react-redux';
-import { Toaster } from 'react-hot-toast';
-import { store, RootState } from '@/store';
 import ModalManager from '@/components/Modals/ModalManager';
 import WidgetSettingsPanel from '@/components/Panels/WidgetSettingsPanel';
+import { RootState, store } from '@/store';
 import '@/styles/globals.css';
+import type { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { Provider, useSelector } from 'react-redux';
 
 function AppContent({ Component, pageProps }: AppProps) {
   const widgetSettingsPanel = useSelector((state: RootState) => state.ui.widgetSettingsPanel);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <Component {...pageProps} />;
+  }
 
   return (
     <>

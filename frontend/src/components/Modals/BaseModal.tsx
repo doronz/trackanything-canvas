@@ -1,5 +1,5 @@
-import { ReactNode, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ReactNode, useEffect } from 'react';
 
 interface BaseModalProps {
   isOpen: boolean;
@@ -22,6 +22,8 @@ export default function BaseModal({
 }: BaseModalProps) {
   // Handle ESC key
   useEffect(() => {
+    if (typeof document === 'undefined') return;
+
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
