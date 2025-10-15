@@ -1,0 +1,61 @@
+{
+    "name": "To-Do List",
+    "description": "A simple task management widget to track your todos",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "text",
+                "name": "Task",
+                "type": "text",
+                "required": false,
+                "placeholder": "Add new task...",
+                "description": "The task to be completed"
+            },
+            {
+                "id": "completed",
+                "name": "Completed",
+                "type": "boolean",
+                "required": false,
+                "defaultValue": false,
+                "description": "Whether the task is completed"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Todo",
+        "mappings": {
+            "taskText": "data.text",
+            "taskCompleted": "data.completed"
+        },
+        "interactions": {
+            "allowAdd": true,
+            "allowEdit": true,
+            "allowDelete": true
+        }
+    },
+    "settings": {
+        "title": "To-Do List",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 450,
+        "defaultHeight": 500
+    },
+    "widget_metadata": {
+        "category": "Productivity",
+        "tags": [
+            "todo",
+            "task",
+            "productivity",
+            "checklist"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "✅"
+    },
+    "is_public": true
+}

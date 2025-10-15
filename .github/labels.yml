@@ -1,0 +1,212 @@
+# GitHub Labels Configuration
+# Use this file to create consistent labels across the repository
+# You can apply these labels using: gh label sync -f .github/labels.yml
+
+# Type labels (based on conventional commits)
+- name: "enhancement"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "feature"
+  color: "0e8a16"
+  description: "New feature implementation"
+
+- name: "bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "fix"
+  color: "fc6d26"
+  description: "Bug fix"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "Documentation improvements"
+
+- name: "style"
+  color: "f9d0c4"
+  description: "Code style, formatting, UI updates"
+
+- name: "refactor"
+  color: "fbca04"
+  description: "Code refactoring"
+
+- name: "performance"
+  color: "1d76db"
+  description: "Performance improvements"
+
+- name: "test"
+  color: "bfe5bf"
+  description: "Test additions or updates"
+
+- name: "build"
+  color: "c5def5"
+  description: "Build system changes"
+
+- name: "ci-cd"
+  color: "1f883d"
+  description: "CI/CD configuration changes"
+
+- name: "chore"
+  color: "fef2c0"
+  description: "Maintenance tasks"
+
+- name: "maintenance"
+  color: "fbca04"
+  description: "Repository maintenance"
+
+- name: "revert"
+  color: "e4e669"
+  description: "Revert previous changes"
+
+- name: "security"
+  color: "d93f0b"
+  description: "Security fixes or improvements"
+
+# Breaking changes
+- name: "breaking-change"
+  color: "b60205"
+  description: "Breaking API or behavior changes"
+
+# Size labels
+- name: "size/XS"
+  color: "00ff00"
+  description: "Extra small PR (< 10 changes)"
+
+- name: "size/S"
+  color: "77ff00"
+  description: "Small PR (10-49 changes)"
+
+- name: "size/M"
+  color: "ffff00"
+  description: "Medium PR (50-199 changes)"
+
+- name: "size/L"
+  color: "ff9900"
+  description: "Large PR (200-499 changes)"
+
+- name: "size/XL"
+  color: "ff0000"
+  description: "Extra large PR (500+ changes)"
+
+# Component labels
+- name: "frontend"
+  color: "5319e7"
+  description: "Frontend related changes"
+
+- name: "backend"
+  color: "0e8a16"
+  description: "Backend related changes"
+
+- name: "widgets"
+  color: "d876e3"
+  description: "Widget-related changes"
+
+- name: "canvas"
+  color: "c2e0c6"
+  description: "Canvas system changes"
+
+- name: "api"
+  color: "0366d6"
+  description: "API changes"
+
+- name: "database"
+  color: "1d76db"
+  description: "Database schema or migrations"
+
+- name: "mcp"
+  color: "fbca04"
+  description: "MCP integration changes"
+
+- name: "state-management"
+  color: "7057ff"
+  description: "State management (Redux) changes"
+
+- name: "services"
+  color: "0e8a16"
+  description: "Backend services changes"
+
+- name: "docker"
+  color: "2188ff"
+  description: "Docker configuration"
+
+- name: "tests"
+  color: "bfe5bf"
+  description: "Test-related changes"
+
+# Priority labels
+- name: "priority: critical"
+  color: "b60205"
+  description: "Critical priority"
+
+- name: "priority: high"
+  color: "d93f0b"
+  description: "High priority"
+
+- name: "priority: medium"
+  color: "fbca04"
+  description: "Medium priority"
+
+- name: "priority: low"
+  color: "0e8a16"
+  description: "Low priority"
+
+# Status labels
+- name: "status: needs review"
+  color: "fbca04"
+  description: "Awaiting review"
+
+- name: "status: in progress"
+  color: "0e8a16"
+  description: "Work in progress"
+
+- name: "status: blocked"
+  color: "d93f0b"
+  description: "Blocked by other issues"
+
+- name: "status: needs feedback"
+  color: "cc317c"
+  description: "Needs feedback from maintainers or community"
+
+- name: "status: ready to merge"
+  color: "0e8a16"
+  description: "Ready to be merged"
+
+# Community labels
+- name: "good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+- name: "question"
+  color: "d876e3"
+  description: "Further information is requested"
+
+- name: "duplicate"
+  color: "cfd3d7"
+  description: "This issue or PR already exists"
+
+- name: "wontfix"
+  color: "ffffff"
+  description: "This will not be worked on"
+
+- name: "invalid"
+  color: "e4e669"
+  description: "This doesn't seem right"
+
+# Special labels
+- name: "dependencies"
+  color: "0366d6"
+  description: "Dependency updates"
+
+- name: "needs discussion"
+  color: "cc317c"
+  description: "Needs community discussion"
+
+- name: "hacktoberfest"
+  color: "ff6b6b"
+  description: "Hacktoberfest eligible"
+

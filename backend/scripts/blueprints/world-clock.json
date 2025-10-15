@@ -1,0 +1,76 @@
+{
+    "name": "World Clock",
+    "description": "Display current time across multiple timezones with automatic updates",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "realtime"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "timezones",
+                "name": "Timezones",
+                "type": "textarea",
+                "placeholder": "America/New_York\nEurope/London\nAsia/Tokyo",
+                "defaultValue": "America/New_York\nEurope/London\nAsia/Tokyo",
+                "description": "Enter timezone identifiers, one per line (e.g. America/New_York, Europe/London)"
+            },
+            {
+                "id": "timeFormat",
+                "name": "Time Format",
+                "type": "select",
+                "options": [
+                    "12-hour",
+                    "24-hour"
+                ],
+                "defaultValue": "12-hour",
+                "description": "12-hour or 24-hour time format"
+            },
+            {
+                "id": "showSeconds",
+                "name": "Show Seconds",
+                "type": "boolean",
+                "defaultValue": false,
+                "description": "Show seconds in time display"
+            },
+            {
+                "id": "showDate",
+                "name": "Show Date",
+                "type": "boolean",
+                "defaultValue": true,
+                "description": "Show date along with time"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Clock",
+        "mappings": {
+            "clockTimezones": "data.timezones",
+            "clockFormat": "data.timeFormat",
+            "clockShowSeconds": "data.showSeconds",
+            "clockShowDate": "data.showDate"
+        }
+    },
+    "settings": {
+        "title": "World Clock",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 300,
+        "defaultHeight": 500
+    },
+    "widget_metadata": {
+        "category": "Utility",
+        "tags": [
+            "clock",
+            "time",
+            "timezone",
+            "world",
+            "schedule"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "🌍"
+    },
+    "is_public": true
+}

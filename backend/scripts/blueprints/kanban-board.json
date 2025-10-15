@@ -1,0 +1,82 @@
+{
+    "name": "Kanban Board",
+    "description": "Visual task management with drag-and-drop columns",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "title",
+                "name": "Task Title",
+                "type": "text",
+                "required": false,
+                "placeholder": "Enter task title..."
+            },
+            {
+                "id": "status",
+                "name": "Status",
+                "type": "select",
+                "options": [
+                    "To Do",
+                    "In Progress",
+                    "Done"
+                ],
+                "defaultValue": "To Do"
+            },
+            {
+                "id": "assignee",
+                "name": "Assignee",
+                "type": "text",
+                "placeholder": "Assigned to..."
+            },
+            {
+                "id": "priority",
+                "name": "Priority",
+                "type": "select",
+                "options": [
+                    "Low",
+                    "Medium",
+                    "High"
+                ],
+                "defaultValue": "Medium"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Kanban",
+        "mappings": {
+            "cardTitle": "data.title",
+            "cardSubtitle": "data.assignee",
+            "groupBy": "data.status",
+            "cardPriority": "data.priority"
+        },
+        "interactions": {
+            "allowAdd": true,
+            "allowEdit": true,
+            "allowDelete": true
+        }
+    },
+    "settings": {
+        "title": "Kanban Board",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 800,
+        "defaultHeight": 600
+    },
+    "widget_metadata": {
+        "category": "Project Management",
+        "tags": [
+            "kanban",
+            "tasks",
+            "project",
+            "management"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "📋"
+    },
+    "is_public": true
+}

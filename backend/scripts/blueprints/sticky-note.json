@@ -1,0 +1,46 @@
+{
+    "name": "Sticky Note",
+    "description": "A simple note-taking widget for quick thoughts and reminders",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "content",
+                "name": "Note Content",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "Add your note...",
+                "description": "The main content of your sticky note"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Note",
+        "mappings": {
+            "noteContent": "data.content"
+        }
+    },
+    "settings": {
+        "title": "Sticky Note",
+        "backgroundColor": "#fef3c7",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 350,
+        "defaultHeight": 300
+    },
+    "widget_metadata": {
+        "category": "Notes",
+        "tags": [
+            "note",
+            "memo",
+            "reminder"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "\ud83d\udcdd"
+    },
+    "is_public": true
+}

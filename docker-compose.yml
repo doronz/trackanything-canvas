@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-3031}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8081}
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${BACKEND_PORT:-8081}:${BACKEND_INTERNAL_PORT:-8000}"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/canvas_mcp.db}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3031,http://127.0.0.1:3031}
+      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+    command: sh -c "uvicorn main:app --host 0.0.0.0 --port ${BACKEND_INTERNAL_PORT:-8000} --reload --log-level $(echo ${LOG_LEVEL:-debug} | tr '[:upper:]' '[:lower:]')"
+
+  # PostgreSQL for production (uncomment and configure for production use)
+  # postgres:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB:-canvas_mcp}
+  #     POSTGRES_USER: ${POSTGRES_USER:-canvas_user}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-canvas_password}
+  #   ports:
+  #     - "${POSTGRES_PORT:-5432}:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
+
+# Environment Configuration Guide:
+# 1. Copy .env.example to .env and customize for your needs
+# 2. For different environments, use:
+#    - Development: cp .env.development .env
+#    - Staging: cp .env.staging .env
+#    - Production: cp .env.production .env
+# 3. Or specify environment file: docker-compose --env-file .env.production up

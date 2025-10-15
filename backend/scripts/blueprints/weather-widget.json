@@ -1,0 +1,76 @@
+{
+    "name": "Weather Widget",
+    "description": "Real-time weather data with automatic updates from weather APIs",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "city",
+                "name": "City",
+                "type": "text",
+                "required": true,
+                "placeholder": "New York, NY",
+                "description": "City for weather data"
+            },
+            {
+                "id": "apiKey",
+                "name": "API Key",
+                "type": "text",
+                "required": false,
+                "placeholder": "OpenWeatherMap API key (optional)",
+                "description": "Weather API key for real data"
+            },
+            {
+                "id": "units",
+                "name": "Temperature Units",
+                "type": "select",
+                "options": [
+                    "celsius",
+                    "fahrenheit"
+                ],
+                "defaultValue": "celsius",
+                "description": "Temperature unit preference"
+            },
+            {
+                "id": "refreshInterval",
+                "name": "Refresh Interval (minutes)",
+                "type": "number",
+                "defaultValue": 60,
+                "description": "How often to refresh weather data"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Weather",
+        "mappings": {
+            "weatherCity": "data.city",
+            "weatherUnits": "data.units",
+            "weatherApiKey": "data.apiKey",
+            "weatherRefresh": "data.refreshInterval"
+        }
+    },
+    "settings": {
+        "title": "Weather",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 350,
+        "defaultHeight": 500
+    },
+    "widget_metadata": {
+        "category": "Utility",
+        "tags": [
+            "weather",
+            "forecast",
+            "temperature",
+            "climate"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "🌤️"
+    },
+    "is_public": true
+}

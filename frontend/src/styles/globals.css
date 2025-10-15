@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Global styles */
+html {
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+
+body {
+  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Canvas container styles */
+.canvas-container {
+  @apply w-full h-full overflow-hidden relative;
+  cursor: grab;
+}
+
+.canvas-container:active {
+  cursor: grabbing;
+}
+
+/* Widget styles */
+.widget-container {
+  @apply absolute border-2 border-transparent rounded-lg shadow-sm;
+  min-width: 200px;
+  min-height: 150px;
+  box-sizing: border-box;
+}
+
+.widget-container:hover {
+  @apply border-pink-200 dark:border-pink-600;
+}
+
+.widget-container.selected {
+  @apply border-pink-400 dark:border-pink-500 shadow-lg;
+}
+
+/* Ensure header and content respect the border radius when selected */
+.widget-container .widget-header {
+  @apply flex items-center justify-between p-2 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700;
+  cursor: move;
+  border-top-left-radius: calc(0.5rem - 2px);
+  border-top-right-radius: calc(0.5rem - 2px);
+  min-height: 40px; /* Ensure consistent height regardless of button visibility */
+}
+
+.widget-container:not(.sticky-note-widget) .widget-content {
+  @apply bg-white dark:bg-gray-800 overflow-auto;
+  border-bottom-left-radius: 0; /* Footer will have rounded bottom */
+  border-bottom-right-radius: 0; /* Footer will have rounded bottom */
+  height: calc(100% - 80px); /* Account for header (40px) and footer (40px) height */
+  cursor: default;
+}
+
+.widget-container:not(.sticky-note-widget) .widget-content:only-child {
+  height: calc(100% - 40px); /* Account for footer height */
+  border-top-left-radius: calc(0.5rem - 2px);
+  border-top-right-radius: calc(0.5rem - 2px);
+  border-bottom-left-radius: 0; /* Footer will have rounded bottom */
+  border-bottom-right-radius: 0; /* Footer will have rounded bottom */
+}
+
+/* Sticky note specific styles - removed to prevent conflicts */
+
+.widget-header {
+  @apply flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-t-lg border-b border-gray-200 dark:border-gray-700;
+  cursor: move;
+  min-height: 40px; /* Ensure consistent height regardless of button visibility */
+}
+
+.widget-content {
+  @apply bg-white dark:bg-gray-800 rounded-b-lg h-full overflow-auto;
+  cursor: default;
+}
+
+.widget-resize-handle {
+  @apply absolute w-3 h-3 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] border border-pink-600 rounded-sm;
+  cursor: se-resize;
+  bottom: -6px;
+  right: -6px;
+}
+
+/* Sidebar styles */
+.sidebar {
+  @apply fixed left-0 top-0 h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50;
+  transition: transform 0.3s ease-in-out;
+  width: 320px;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-280px);
+}
+
+.sidebar-toggle {
+  @apply absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-full;
+  @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+  @apply px-2 py-3 rounded-r-lg cursor-pointer;
+}
+
+/* Toolbar styles */
+.toolbar {
+  @apply fixed top-4 left-1/2 transform -translate-x-1/2 z-40;
+  @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+  @apply rounded-lg shadow-lg px-4 py-2 flex items-center space-x-2;
+}
+
+/* Button component styles */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white;
+  @apply hover:shadow-lg transition-shadow;
+  @apply focus:ring-pink-500;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-gray-900;
+  @apply dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100;
+  @apply focus:ring-gray-500;
+}
+
+.btn-outline {
+  @apply border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700;
+  @apply text-gray-700 dark:text-gray-300;
+  @apply focus:ring-gray-500;
+}
+
+.btn-icon {
+  @apply p-2 rounded-lg transition-colors duration-200;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply focus:outline-none focus:ring-2 focus:ring-gray-500;
+}
+
+/* Form styles */
+.form-input {
+  @apply block w-full px-3 py-2 border border-gray-300 dark:border-gray-600;
+  @apply rounded-lg shadow-sm bg-white dark:bg-gray-700;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+}
+
+.form-error {
+  @apply text-sm text-red-600 dark:text-red-400 mt-1;
+}
+
+/* Animation utilities */
+@layer utilities {
+  .animate-in {
+    animation: animateIn 0.3s ease-out;
+  }
+
+  .animate-out {
+    animation: animateOut 0.2s ease-in;
+  }
+}
+
+@keyframes animateIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes animateOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+}
+
+/* Dark mode specific adjustments */
+.dark {
+  color-scheme: dark;
+}
+
+/* Loading states */
+.loading {
+  @apply animate-pulse;
+}
+
+.loading::after {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

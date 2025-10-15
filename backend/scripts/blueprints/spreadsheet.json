@@ -1,0 +1,75 @@
+{
+    "name": "Spreadsheet",
+    "description": "Editable spreadsheet with add/remove columns and rows, like Excel or Google Sheets",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "columns",
+                "name": "Column Headers",
+                "type": "array",
+                "defaultValue": [
+                    "Column 1",
+                    "Column 2",
+                    "Column 3"
+                ],
+                "description": "Column header names"
+            },
+            {
+                "id": "rows",
+                "name": "Row Data",
+                "type": "array",
+                "defaultValue": [
+                    [
+                        "",
+                        "",
+                        ""
+                    ],
+                    [
+                        "",
+                        "",
+                        ""
+                    ]
+                ],
+                "description": "Spreadsheet row data"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Spreadsheet",
+        "mappings": {
+            "spreadsheetColumns": "data.columns",
+            "spreadsheetRows": "data.rows"
+        },
+        "interactions": {
+            "allowAdd": true,
+            "allowEdit": true,
+            "allowDelete": true
+        }
+    },
+    "settings": {
+        "title": "Spreadsheet",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 600,
+        "defaultHeight": 420
+    },
+    "widget_metadata": {
+        "category": "Data",
+        "tags": [
+            "spreadsheet",
+            "table",
+            "excel",
+            "data",
+            "cells"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "📋"
+    },
+    "is_public": true
+}

@@ -1,0 +1,63 @@
+{
+    "name": "AI Chat",
+    "description": "AI-powered chat interface with conversation history",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "message",
+                "name": "Message",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "Type your message..."
+            },
+            {
+                "id": "role",
+                "name": "Role",
+                "type": "select",
+                "options": [
+                    "user",
+                    "assistant"
+                ],
+                "defaultValue": "user"
+            },
+            {
+                "id": "timestamp",
+                "name": "Timestamp",
+                "type": "datetime"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Chat",
+        "mappings": {
+            "messageContent": "data.message",
+            "messageRole": "data.role",
+            "messageTime": "data.timestamp"
+        }
+    },
+    "settings": {
+        "title": "AI Chat",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 550,
+        "defaultHeight": 750
+    },
+    "widget_metadata": {
+        "category": "AI",
+        "tags": [
+            "ai",
+            "chat",
+            "assistant",
+            "conversation"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "🤖"
+    },
+    "is_public": true
+}

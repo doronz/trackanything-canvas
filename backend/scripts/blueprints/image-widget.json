@@ -1,0 +1,65 @@
+{
+    "name": "Image Widget",
+    "description": "Display and manage images on your canvas",
+    "widget_version": "2.0",
+    "data_source": {
+        "type": "userInput"
+    },
+    "data_schema": {
+        "fields": [
+            {
+                "id": "url",
+                "name": "Image URL",
+                "type": "url",
+                "required": false,
+                "placeholder": "https://example.com/image.jpg",
+                "description": "URL of the image to display"
+            },
+            {
+                "id": "alt",
+                "name": "Alt Text",
+                "type": "text",
+                "required": false,
+                "placeholder": "Describe the image...",
+                "description": "Alternative text for accessibility"
+            },
+            {
+                "id": "caption",
+                "name": "Caption",
+                "type": "text",
+                "required": false,
+                "placeholder": "Image caption...",
+                "description": "Caption to display below the image"
+            }
+        ]
+    },
+    "view_schema": {
+        "displayComponent": "Gallery",
+        "mappings": {
+            "imageUrl": "data.url",
+            "imageAlt": "data.alt",
+            "imageCaption": "data.caption"
+        }
+    },
+    "settings": {
+        "title": "Image",
+        "backgroundColor": "#ffffff",
+        "textColor": "#374151",
+        "fontSize": 14,
+        "defaultWidth": 450,
+        "defaultHeight": 450
+    },
+    "widget_metadata": {
+        "category": "Media",
+        "tags": [
+            "image",
+            "photo",
+            "media",
+            "visual"
+        ],
+        "author": "Canvas MCP Client",
+        "version": "2.0",
+        "icon": "🖼️"
+    },
+    "is_public": true
+}

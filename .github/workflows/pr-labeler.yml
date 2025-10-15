@@ -1,0 +1,251 @@
+name: PR Labeler
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label PR based on title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitle = context.payload.pull_request.title.toLowerCase();
+            const prNumber = context.payload.pull_request.number;
+
+            // Define label mappings based on conventional commit prefixes
+            const labelMappings = {
+              'feat:': ['enhancement', 'feature'],
+              'fix:': ['bug', 'fix'],
+              'docs:': ['documentation'],
+              'style:': ['style'],
+              'refactor:': ['refactor'],
+              'perf:': ['performance'],
+              'test:': ['test'],
+              'build:': ['build'],
+              'ci:': ['ci-cd'],
+              'chore:': ['chore', 'maintenance'],
+              'revert:': ['revert'],
+              'security:': ['security']
+            };
+
+            // Find matching prefix
+            let labelsToAdd = [];
+            for (const [prefix, labels] of Object.entries(labelMappings)) {
+              if (prTitle.startsWith(prefix)) {
+                labelsToAdd = labels;
+                break;
+              }
+            }
+
+            if (labelsToAdd.length > 0) {
+              // Get current labels
+              const { data: currentLabels } = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+              });
+
+              const currentLabelNames = currentLabels.map(label => label.name);
+
+              // Remove old type labels that don't match
+              const typeLabels = Object.values(labelMappings).flat();
+              const labelsToRemove = currentLabelNames.filter(
+                label => typeLabels.includes(label) && !labelsToAdd.includes(label)
+              );
+
+              for (const label of labelsToRemove) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    name: label,
+                  });
+                  console.log(`Removed label: ${label}`);
+                } catch (error) {
+                  console.log(`Could not remove label ${label}: ${error.message}`);
+                }
+              }
+
+              // Add new labels
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: labelsToAdd,
+              });
+
+              console.log(`Added labels: ${labelsToAdd.join(', ')}`);
+            } else {
+              console.log('No matching prefix found. PR title should start with: feat:, fix:, docs:, style:, refactor:, perf:, test:, build:, ci:, chore:, revert:, or security:');
+            }
+
+      - name: Check for breaking changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitle = context.payload.pull_request.title.toLowerCase();
+            const prBody = context.payload.pull_request.body || '';
+            const prNumber = context.payload.pull_request.number;
+
+            // Check if PR title contains breaking change indicator
+            const hasBreakingInTitle = prTitle.includes('!:') || prTitle.includes('breaking');
+            const hasBreakingInBody = prBody.toLowerCase().includes('breaking change');
+
+            if (hasBreakingInTitle || hasBreakingInBody) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: ['breaking-change'],
+              });
+              console.log('Added breaking-change label');
+            }
+
+      - name: Add size labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+
+            // Get PR files
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            // Calculate total changes
+            const totalChanges = files.reduce((sum, file) => sum + file.changes, 0);
+
+            let sizeLabel = '';
+            if (totalChanges < 10) {
+              sizeLabel = 'size/XS';
+            } else if (totalChanges < 50) {
+              sizeLabel = 'size/S';
+            } else if (totalChanges < 200) {
+              sizeLabel = 'size/M';
+            } else if (totalChanges < 500) {
+              sizeLabel = 'size/L';
+            } else {
+              sizeLabel = 'size/XL';
+            }
+
+            // Remove old size labels
+            const { data: currentLabels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const sizeLabels = ['size/XS', 'size/S', 'size/M', 'size/L', 'size/XL'];
+            for (const label of currentLabels) {
+              if (sizeLabels.includes(label.name) && label.name !== sizeLabel) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    name: label.name,
+                  });
+                } catch (error) {
+                  console.log(`Could not remove label ${label.name}`);
+                }
+              }
+            }
+
+            // Add new size label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: [sizeLabel],
+            });
+
+            console.log(`Added size label: ${sizeLabel} (${totalChanges} changes)`);
+
+      - name: Add component labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+
+            // Get PR files
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            const componentLabels = new Set();
+
+            files.forEach(file => {
+              const path = file.filename;
+
+              // Frontend components
+              if (path.startsWith('frontend/')) {
+                componentLabels.add('frontend');
+
+                if (path.includes('/components/Widgets/')) {
+                  componentLabels.add('widgets');
+                }
+                if (path.includes('/components/Canvas/')) {
+                  componentLabels.add('canvas');
+                }
+                if (path.includes('/store/')) {
+                  componentLabels.add('state-management');
+                }
+              }
+
+              // Backend components
+              if (path.startsWith('backend/')) {
+                componentLabels.add('backend');
+
+                if (path.includes('/routers/')) {
+                  componentLabels.add('api');
+                }
+                if (path.includes('/services/')) {
+                  componentLabels.add('services');
+                }
+                if (path.includes('alembic') || path.includes('database')) {
+                  componentLabels.add('database');
+                }
+                if (path.includes('mcp')) {
+                  componentLabels.add('mcp');
+                }
+              }
+
+              // Documentation
+              if (path.endsWith('.md')) {
+                componentLabels.add('documentation');
+              }
+
+              // Docker
+              if (path.includes('docker') || path.includes('Dockerfile')) {
+                componentLabels.add('docker');
+              }
+
+              // Tests
+              if (path.includes('test')) {
+                componentLabels.add('tests');
+              }
+            });
+
+            if (componentLabels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: Array.from(componentLabels),
+              });
+
+              console.log(`Added component labels: ${Array.from(componentLabels).join(', ')}`);
+            }
+
