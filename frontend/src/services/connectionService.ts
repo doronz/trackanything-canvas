@@ -1,8 +1,8 @@
 import {
-    ConnectionCreationResult,
-    CreateConnectionRequest,
-    CreateConnectionWithAIRequest,
-    WidgetConnection,
+  ConnectionCreationResult,
+  CreateConnectionRequest,
+  CreateConnectionWithAIRequest,
+  WidgetConnection,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081';

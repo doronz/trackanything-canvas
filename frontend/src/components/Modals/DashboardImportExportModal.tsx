@@ -3,11 +3,11 @@ import { AppDispatch, RootState } from '@/store';
 import { fetchDashboards, setCurrentDashboard } from '@/store/dashboardSlice';
 import { closeModal } from '@/store/uiSlice';
 import {
-    ArrowDownTrayIcon,
-    ArrowUpTrayIcon,
-    CheckCircleIcon,
-    ExclamationTriangleIcon,
-    XCircleIcon,
+  ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  XCircleIcon,
 } from '@heroicons/react/24/outline';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -3,11 +3,11 @@ import { AppDispatch } from '@/store';
 import { closeModal } from '@/store/uiSlice';
 import { DatabaseWidgetBlueprint } from '@/types';
 import {
-    EyeIcon,
-    HeartIcon,
-    MagnifyingGlassIcon,
-    PlusIcon,
-    SparklesIcon
+  EyeIcon,
+  HeartIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { useEffect, useState } from 'react';
