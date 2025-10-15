@@ -3,7 +3,6 @@ MCP Registry integration service.
 This module handles integration with the official Anthropic MCP Registry.
 """
 
-import asyncio
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -11,7 +10,7 @@ from typing import Any, Dict, List, Optional
 import aiohttp
 from sqlalchemy.orm import Session
 
-from database import MCPRegistryServer, get_db
+from database import MCPRegistryServer
 
 logger = logging.getLogger(__name__)
 

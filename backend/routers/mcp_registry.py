@@ -200,7 +200,7 @@ async def search_registry_servers(search_request: MCPRegistrySearchRequest, db: 
 async def get_registry_stats(db: Session = Depends(get_db)):
     """Get statistics about the MCP Registry servers."""
     total_servers = db.query(MCPRegistryServer).count()
-    official_servers = db.query(MCPRegistryServer).filter(MCPRegistryServer.is_official == True).count()
+    official_servers = db.query(MCPRegistryServer).filter(MCPRegistryServer.is_official.is_(True)).count()
     verified_servers = db.query(MCPRegistryServer).filter(MCPRegistryServer.verification_status == "verified").count()
 
     # Get categories with counts

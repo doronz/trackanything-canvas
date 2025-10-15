@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/store';
-import { zoomIn, zoomOut, resetView, setZoom } from '@/store/canvasSlice';
-import { PlusIcon, MinusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/outline';
+import { AppDispatch, RootState } from '@/store';
+import { resetView, setZoom, zoomIn, zoomOut } from '@/store/canvasSlice';
+import { ArrowsPointingOutIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ZoomControls() {
   const dispatch = useDispatch<AppDispatch>();
@@ -10,15 +10,14 @@ export default function ZoomControls() {
   const { showZoomControls } = useSelector((state: RootState) => state.ui);
 
   const [inputValue, setInputValue] = useState('');
-
-  if (!showZoomControls) return null;
-
   const zoomPercentage = Math.round(zoom * 100);
 
   // Update input value when zoom changes externally
   useEffect(() => {
     setInputValue(zoomPercentage.toString());
   }, [zoomPercentage]);
+
+  if (!showZoomControls) return null;
 
   const handleZoomInClick = () => {
     dispatch(zoomIn(undefined));

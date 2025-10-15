@@ -5,12 +5,12 @@ This module handles webpage metadata extraction and content fetching for the Web
 
 import logging
 import re
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, HttpUrl
 
 logger = logging.getLogger(__name__)

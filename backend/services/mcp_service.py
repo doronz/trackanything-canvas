@@ -3,11 +3,10 @@ MCP Service for managing FastMCP client connections.
 This service handles multiple MCP server connections and provides a unified interface.
 """
 
-import asyncio
 import json
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from fastmcp import Client
 from fastmcp.client.auth import OAuth

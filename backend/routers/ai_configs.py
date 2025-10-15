@@ -3,13 +3,12 @@ AI LLM configuration API routes.
 This module handles AI provider configuration and API key management.
 """
 
-import json
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import httpx
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 
@@ -238,7 +237,7 @@ async def test_ai_config(config_id: int, db: Session = Depends(get_db)):
             }
         else:
             # Decrypt API key for other providers
-            api_key = encryption_service.decrypt(config.api_key_encrypted)
+            # Reserved for future testing: encryption_service.decrypt(config.api_key_encrypted)
 
             # TODO: Implement actual API testing based on provider
             # For now, just return success
@@ -258,7 +257,7 @@ async def test_ai_config(config_id: int, db: Session = Depends(get_db)):
 @router.get("/default/current")
 async def get_default_ai_config(db: Session = Depends(get_db)):
     """Get the current default AI configuration."""
-    config = db.query(AIConfig).filter(AIConfig.is_default == True).first()
+    config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
     if not config:
         raise HTTPException(status_code=404, detail="No default AI configuration found")
 

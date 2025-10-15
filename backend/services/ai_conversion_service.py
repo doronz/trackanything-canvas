@@ -3,7 +3,6 @@ AI Conversion Service for Widget Connections.
 This service handles converting text data from one widget to structured data for another widget.
 """
 
-import asyncio
 import inspect
 import json
 from datetime import datetime

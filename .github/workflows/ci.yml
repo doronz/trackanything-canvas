@@ -45,7 +45,7 @@ jobs:
         run: |
           cd backend
           mypy . --exclude alembic/versions --exclude __pycache__
-        continue-on-error: true  # MyPy can be strict, so we allow it to warn
+        continue-on-error: true # MyPy can be strict, so we allow it to warn
 
   # Frontend linting (required for PRs)
   frontend-lint:
@@ -165,8 +165,8 @@ jobs:
 
       - name: Test Docker Compose
         run: |
-          docker-compose config
-          docker-compose build
+          docker compose config
+          docker compose build
 
   # Security scanning
   security-scan:
@@ -190,4 +190,3 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
         continue-on-error: true
-

@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { WidgetConnection, Widget } from '@/types';
+import { Widget, WidgetConnection } from '@/types';
+import React, { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface ConnectionVisualizationProps {
   connections: WidgetConnection[];
@@ -270,9 +270,9 @@ export default function ConnectionVisualization({
     return lines;
   }, [connections, widgets, zoom, pan, lastUpdated]);
 
-  if (process.env.NODE_ENV === 'development') {
-    // Expose window.revealAllPrompts() function for browser console access
-    React.useEffect(() => {
+  // Expose window.revealAllPrompts() function for browser console access (development only)
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
       // Define the global function
       (window as any).revealAllPrompts = () => {
         // Find all AI transformation connections and trigger their tooltips
@@ -309,8 +309,8 @@ export default function ConnectionVisualization({
       return () => {
         delete (window as any).revealAllPrompts;
       };
-    }, [connectionLines]);
-  }
+    }
+  }, [connectionLines]);
 
   // Generate SVG path for curved line
   const getCurvedPath = (line: ConnectionLine) => {

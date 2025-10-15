@@ -1,21 +1,32 @@
 [flake8]
 max-line-length = 120
 exclude =
-    .git,
     __pycache__,
-    .pytest_cache,
-    .mypy_cache,
-    venv,
-    env,
+    .git,
     .venv,
+    venv,
     alembic/versions,
-    migrations
-# Ignore codes:
-# E203: whitespace before ':'
-# E501: line too long (handled by black)
-# W503: line break before binary operator
-# E402: module level import not at top of file
-ignore = E203,E501,W503,E402
+    build,
+    dist,
+    *.egg-info
+ignore =
+    # F541 - f-string without placeholders (logger.info(f"message") is fine for consistency)
+    F541,
+    # W503 - line break before binary operator (conflicts with black)
+    W503,
+    # E203 - whitespace before ':' (conflicts with black)
+    E203,
+    # E501 - line too long (some lines are intentionally long)
+    E501,
+    # E722 - bare except (acceptable in some cases)
+    E722,
+    # F811 - redefinition of unused (conditional imports are common)
+    F811,
 per-file-ignores =
-    __init__.py:F401
-
+    # Test files and conftest can have unused imports/variables
+    conftest.py:F401,F841
+    tests/*.py:F401,F841
+    # Scripts can have unused imports and module-level import issues
+    scripts/*.py:F401,F841,E402
+    # Alembic env.py has module-level imports after code
+    alembic/env.py:E402

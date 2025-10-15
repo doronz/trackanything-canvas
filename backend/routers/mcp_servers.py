@@ -3,8 +3,6 @@ MCP Server management API routes.
 This module handles MCP server configuration and connection management using FastMCP.
 """
 
-import asyncio
-import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -127,7 +125,7 @@ async def update_mcp_server(server_id: int, server_update: MCPServerUpdate, db: 
         server.status = "connected"
         server.last_connected = datetime.utcnow()
         db.commit()
-    except Exception as e:
+    except Exception:
         server.status = "error"
         db.commit()
 

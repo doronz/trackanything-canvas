@@ -315,7 +315,7 @@ async def import_dashboard(import_data: DashboardImportData, db: Session = Depen
             # Check if a public blueprint with the same name exists
             existing_blueprint = (
                 db.query(WidgetBlueprint)
-                .filter(WidgetBlueprint.name == blueprint_data["name"], WidgetBlueprint.is_public == True)
+                .filter(WidgetBlueprint.name == blueprint_data["name"], WidgetBlueprint.is_public.is_(True))
                 .first()
             )
 

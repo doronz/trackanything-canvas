@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import and_, func, or_
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from database import MCPServerDirectory, get_db

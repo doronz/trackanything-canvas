@@ -3,22 +3,19 @@ AI Chat API routes with MCP integration.
 This module handles AI chat interactions with integrated MCP tool calling capabilities.
 """
 
-import asyncio
 import json
 import logging
 import time
 from typing import Any, Dict, List, Optional
 
 import anthropic
-import ollama
 import openai
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
-from google import genai
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from database import AIConfig, MCPServer, get_db
+from database import AIConfig, get_db
 from services.encryption_service import EncryptionService
 from services.mcp_service import mcp_service
 
@@ -62,7 +59,7 @@ async def chat_with_ai(chat_request: ChatRequest, db: Session = Depends(get_db))
     if chat_request.ai_config_id:
         ai_config = db.query(AIConfig).filter(AIConfig.id == chat_request.ai_config_id).first()
     else:
-        ai_config = db.query(AIConfig).filter(AIConfig.is_default == True).first()
+        ai_config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
 
     if not ai_config:
         raise HTTPException(status_code=404, detail="No AI configuration found")
@@ -161,7 +158,7 @@ async def chat_with_ai(chat_request: ChatRequest, db: Session = Depends(get_db))
 def _provider_supports_tools(ai_config: AIConfig) -> bool:
     """Check if the AI provider and model support tool calling."""
     provider = ai_config.provider.lower()
-    model = ai_config.model.lower()
+    # model check could be added here for future fine-grained support
 
     # OpenAI and Anthropic have robust tool calling support
     if provider in ["openai", "anthropic"]:
@@ -171,8 +168,8 @@ def _provider_supports_tools(ai_config: AIConfig) -> bool:
     if provider == "gemini":
         try:
             # Check if required dependencies are available
-            import google.genai
-            from fastmcp import Client
+            import google.genai  # noqa: F401
+            from fastmcp import Client  # noqa: F401
 
             return True  # Gemini has native MCP support via FastMCP
         except ImportError:
@@ -797,7 +794,7 @@ async def get_tool_support_status(db: Session = Depends(get_db)):
 def _get_tool_support_note(ai_config: AIConfig) -> str:
     """Get a human-readable note about tool calling support for this configuration."""
     provider = ai_config.provider.lower()
-    model = ai_config.model.lower()
+    # model check could be added here for future fine-grained support
 
     if provider in ["openai", "anthropic"]:
         return "✅ Full tool calling support"
@@ -805,8 +802,8 @@ def _get_tool_support_note(ai_config: AIConfig) -> str:
     if provider == "gemini":
         try:
             # Check if required dependencies are available
-            import google.genai
-            from fastmcp import Client
+            import google.genai  # noqa: F401
+            from fastmcp import Client  # noqa: F401
 
             return "✅ Native MCP support via FastMCP"
         except ImportError:
@@ -828,7 +825,7 @@ async def stream_chat_with_ai(chat_request: ChatRequest, db: Session = Depends(g
             if chat_request.ai_config_id:
                 ai_config = db.query(AIConfig).filter(AIConfig.id == chat_request.ai_config_id).first()
             else:
-                ai_config = db.query(AIConfig).filter(AIConfig.is_default == True).first()
+                ai_config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
 
             if not ai_config:
                 yield f"data: {json.dumps({'error': 'No AI configuration found'})}\n\n"

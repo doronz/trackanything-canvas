@@ -10,7 +10,6 @@ import re
 import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -279,7 +278,7 @@ async def list_dashboard_connections(dashboard_id: int, db: Session = Depends(ge
 async def get_ai_config_status(db: Session = Depends(get_db)):
     """Check if AI configuration is available for widget connections."""
     # First try to get the default AI config
-    ai_config = db.query(AIConfig).filter(AIConfig.is_default == True).first()
+    ai_config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
 
     # If no default, use any available AI config
     if not ai_config:
@@ -433,7 +432,7 @@ async def create_connection_with_ai(request: CreateConnectionWithAIRequest, db: 
         ai_config = db.query(AIConfig).filter(AIConfig.id == request.ai_config_id).first()
         log_with_location(f"  - Using specified AI Config ID: {request.ai_config_id}", trace_id)
     else:
-        ai_config = db.query(AIConfig).filter(AIConfig.is_default == True).first()
+        ai_config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
         log_with_location(f"  - Using default AI Config", trace_id)
 
     if not ai_config:

@@ -7,8 +7,8 @@ from datetime import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from sqlalchemy import and_, or_
+from pydantic import BaseModel, ConfigDict, model_validator
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from database import WidgetBlueprint, get_db
@@ -121,7 +121,7 @@ async def get_widget_blueprints(
     query = db.query(WidgetBlueprint)
 
     if public_only:
-        query = query.filter(WidgetBlueprint.is_public == True)
+        query = query.filter(WidgetBlueprint.is_public.is_(True))
 
     if search:
         query = query.filter(
