@@ -1,8 +1,8 @@
 import {
-  WidgetConnection,
-  CreateConnectionRequest,
-  CreateConnectionWithAIRequest,
-  ConnectionCreationResult,
+    ConnectionCreationResult,
+    CreateConnectionRequest,
+    CreateConnectionWithAIRequest,
+    WidgetConnection,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081';
@@ -288,7 +288,7 @@ class ConnectionService {
     // Generic text extraction fallback for unknown display components
     if (Array.isArray(widget.content)) {
       return widget.content
-        .map(item => {
+        .map((item: any) => {
           if (typeof item === 'string') return item;
           if (item.text) return item.text;
           if (item.name) return item.name;

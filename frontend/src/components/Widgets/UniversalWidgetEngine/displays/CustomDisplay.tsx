@@ -3,9 +3,8 @@
  * Fallback component for unknown display types or custom implementations
  */
 
-import React from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 
 interface CustomDisplayProps {
   widget: PluggableWidget;
@@ -48,7 +47,7 @@ export default function CustomDisplay({
             </div>
             <div>
               <strong>Version:</strong>{' '}
-              {blueprint.widgetVersion || blueprint.widget_version || 'Unknown'}
+              {blueprint.widgetVersion || (blueprint as any).widget_version || 'Unknown'}
             </div>
             <div>
               <strong>Display Component:</strong>{' '}

@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store';
-import { closeModal } from '@/store/uiSlice';
 import { useWidgetCreation } from '@/hooks/useWidgetCreation';
-import BaseModal from './BaseModal';
-import { WidgetBlueprint } from '@/types';
+import { AppDispatch } from '@/store';
+import { closeModal } from '@/store/uiSlice';
+import { DatabaseWidgetBlueprint } from '@/types';
 import {
-  MagnifyingGlassIcon,
-  FunnelIcon,
-  PlusIcon,
-  SparklesIcon,
-  TagIcon,
-  UserIcon,
-  CalendarIcon,
-  HeartIcon,
-  EyeIcon,
+    EyeIcon,
+    HeartIcon,
+    MagnifyingGlassIcon,
+    PlusIcon,
+    SparklesIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import BaseModal from './BaseModal';
 
 interface WidgetLibraryModalProps {
   isOpen: boolean;
@@ -97,8 +93,8 @@ const getEngineIcon = (blueprint: any) => {
 };
 
 // Mock data generation for widget previews
-const generateMockPreview = (blueprint: WidgetBlueprint) => {
-  const layout = blueprint.schema.displayLayout;
+const generateMockPreview = (blueprint: DatabaseWidgetBlueprint) => {
+  const layout = blueprint.schema?.displayLayout;
 
   switch (layout) {
     case 'todo' as any:
@@ -265,10 +261,10 @@ const generateMockPreview = (blueprint: WidgetBlueprint) => {
     default:
       return (
         <div className="w-full text-center space-y-2">
-          <span className="text-2xl">{getEngineIcon(blueprint.widgetEngine)}</span>
+          <span className="text-2xl">{getEngineIcon(blueprint.widget_engine || '')}</span>
           <div className="text-sm font-medium">{blueprint.name}</div>
           <div className="text-xs text-gray-500">
-            Layout: {layout || 'Default'} • {blueprint.schema.fields?.length || 0} fields
+            Layout: {layout || 'Default'} • {blueprint.schema?.fields?.length || 0} fields
           </div>
         </div>
       );
@@ -279,7 +275,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
   const dispatch = useDispatch<AppDispatch>();
   const { installWidgetFromLibrary, canCreateWidget } = useWidgetCreation();
 
-  const [blueprints, setBlueprints] = useState<WidgetBlueprint[]>([]);
+  const [blueprints, setBlueprints] = useState<DatabaseWidgetBlueprint[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -293,7 +289,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
   });
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [previewWidget, setPreviewWidget] = useState<WidgetBlueprint | null>(null);
+  const [previewWidget, setPreviewWidget] = useState<DatabaseWidgetBlueprint | null>(null);
 
   // Load widget blueprints from API
   const loadBlueprints = async () => {
@@ -314,9 +310,9 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
       const data = await response.json();
 
       // Sort the data
-      data.sort((a: WidgetBlueprint, b: WidgetBlueprint) => {
-        const aVal = a[filters.sortBy as keyof WidgetBlueprint] || '';
-        const bVal = b[filters.sortBy as keyof WidgetBlueprint] || '';
+      data.sort((a: DatabaseWidgetBlueprint, b: DatabaseWidgetBlueprint) => {
+        const aVal = a[filters.sortBy as keyof DatabaseWidgetBlueprint] || '';
+        const bVal = b[filters.sortBy as keyof DatabaseWidgetBlueprint] || '';
 
         if (filters.sortOrder === 'asc') {
           return aVal > bVal ? 1 : -1;
@@ -355,7 +351,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
     // TODO: Save to localStorage or user preferences
   };
 
-  const installWidget = async (blueprint: WidgetBlueprint) => {
+  const installWidget = async (blueprint: DatabaseWidgetBlueprint) => {
     if (!canCreateWidget) {
       setError('Please select a dashboard first');
       return;
@@ -477,7 +473,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
     </div>
   );
 
-  const renderWidgetCard = (blueprint: WidgetBlueprint) => {
+  const renderWidgetCard = (blueprint: DatabaseWidgetBlueprint) => {
     const isFavorite = favorites.has(blueprint.id!);
 
     if (viewMode === 'list') {
@@ -489,7 +485,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-1">
               <h3 className="font-medium text-gray-900">{blueprint.name}</h3>
-              <span className="text-lg">{getEngineIcon(blueprint.widgetEngine)}</span>
+              <span className="text-lg">{getEngineIcon(blueprint.widget_engine || '')}</span>
               <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
                 {getCategoryIcon(blueprint.widget_metadata?.category || 'General')}{' '}
                 {blueprint.widget_metadata?.category}
@@ -498,7 +494,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
             <p className="text-sm text-gray-600 mb-2">{blueprint.description}</p>
             <div className="flex items-center space-x-4 text-xs text-gray-500">
               <span>🏗️ {blueprint?.view_schema?.displayComponent || 'Universal Widget'}</span>
-              <span>📊 {blueprint.schema.fields?.length || 0} fields</span>
+              <span>📊 {blueprint.schema?.fields?.length || 0} fields</span>
               <span>📥 {blueprint.install_count || 0} installs</span>
               {blueprint.widget_metadata?.author && (
                 <span>👤 {blueprint.widget_metadata.author}</span>
@@ -543,7 +539,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl">{getEngineIcon(blueprint.widgetEngine)}</span>
+            <span className="text-2xl">{getEngineIcon(blueprint.widget_engine || '')}</span>
             <div>
               <h3 className="font-medium text-gray-900">{blueprint.name}</h3>
               <div className="flex items-center space-x-1 text-xs text-gray-500">
@@ -568,13 +564,13 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
 
         <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
           <span>🏗️ {blueprint?.view_schema?.displayComponent || 'Universal Widget'}</span>
-          <span>📊 {blueprint.schema.fields?.length || 0} fields</span>
+          <span>📊 {blueprint.schema?.fields?.length || 0} fields</span>
           <span>📥 {blueprint.install_count || 0}</span>
         </div>
 
         {blueprint.widget_metadata?.tags && blueprint.widget_metadata.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
-            {blueprint.widget_metadata.tags.slice(0, 3).map(tag => (
+            {blueprint.widget_metadata.tags.slice(0, 3).map((tag: string) => (
               <span key={tag} className="px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded">
                 #{tag}
               </span>
@@ -697,7 +693,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
 
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => dispatch(closeModal())}
+              onClick={() => dispatch(closeModal('widgetLibrary'))}
               className="text-sm text-blue-600 hover:text-blue-800"
             >
               Need help? View Guide
@@ -723,7 +719,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">{getEngineIcon(previewWidget.widgetEngine)}</span>
+                <span className="text-2xl">{getEngineIcon(previewWidget.widget_engine || '')}</span>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {previewWidget.name}
@@ -776,7 +772,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
                     Fields:
                   </h4>
                   <div className="space-y-1">
-                    {previewWidget.schema.fields?.map((field, index) => (
+                    {previewWidget.schema?.fields?.map((field: any, index: number) => (
                       <div
                         key={index}
                         className="text-sm text-gray-600 dark:text-gray-400 flex items-center space-x-2"
@@ -795,7 +791,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
                       Tags:
                     </h4>
                     <div className="flex flex-wrap gap-1">
-                      {previewWidget.widget_metadata.tags.map(tag => (
+                      {previewWidget.widget_metadata.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded"

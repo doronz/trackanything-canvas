@@ -1,2 +1,3 @@
-export { default } from './McpServerModalNew';
+export { default } from '../McpServerModal';
 export * from './types';
+

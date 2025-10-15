@@ -3,9 +3,9 @@
  * Renders data in a table format with sorting, filtering, and pagination
  */
 
-import React, { useState, useMemo } from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
+import { useMemo, useState } from 'react';
 
 interface TableDisplayProps {
   widget: PluggableWidget;
@@ -167,7 +167,7 @@ export default function TableDisplay({
 
   // Handle field value change
   const handleFieldChange = (fieldId: string, value: any) => {
-    setEditingValues(prev => ({
+    setEditingValues((prev: Record<string, any>) => ({
       ...prev,
       [fieldId]: value,
     }));

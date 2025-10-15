@@ -3,14 +3,14 @@
  * Renders markdown/rich text with preview and editing modes
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import { PluggableWidget } from '@/types';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { updateWidgetContent } from '@/store/widgetSlice';
-import { PencilIcon, EyeIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
+import { DocumentTextIcon, EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useDispatch } from 'react-redux';
 import remarkGfm from 'remark-gfm';
 
 interface TextDisplayProps {
@@ -276,9 +276,9 @@ export default function TextDisplay({
           {content.split('\n').length > 1 && (
             <span className="ml-2">• {content.split('\n').length} lines</span>
           )}
-          {content.split(/\s+/).filter(w => w.length > 0).length > 0 && (
+          {content.split(/\s+/).filter((w: string) => w.length > 0).length > 0 && (
             <span className="ml-2">
-              • {content.split(/\s+/).filter(w => w.length > 0).length} words
+              • {content.split(/\s+/).filter((w: string) => w.length > 0).length} words
             </span>
           )}
         </div>

@@ -3,9 +3,9 @@
  * Renders data as an interactive form for data input/editing
  */
 
-import React, { useState, useEffect } from 'react';
-import { UniversalWidgetBlueprint, UniversalField } from '@/types/universalWidget';
 import { PluggableWidget } from '@/types';
+import { UniversalField, UniversalWidgetBlueprint } from '@/types/universalWidget';
+import React, { useEffect, useState } from 'react';
 
 interface FormDisplayProps {
   widget: PluggableWidget;
@@ -64,14 +64,14 @@ export default function FormDisplay({
 
   // Handle form field change
   const handleFieldChange = (fieldId: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev: Record<string, any>) => ({
       ...prev,
       [fieldId]: value,
     }));
 
     // Clear field error on change
     if (errors[fieldId]) {
-      setErrors(prev => {
+      setErrors((prev: Record<string, string>) => {
         const newErrors = { ...prev };
         delete newErrors[fieldId];
         return newErrors;

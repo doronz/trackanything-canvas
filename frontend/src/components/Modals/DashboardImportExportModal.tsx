@@ -1,17 +1,17 @@
-import React, { useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/store';
-import { closeModal } from '@/store/uiSlice';
-import { addDashboard, fetchDashboards, setCurrentDashboard } from '@/store/dashboardSlice';
-import BaseModal from './BaseModal';
 import { dashboardAPI } from '@/services/api';
+import { AppDispatch, RootState } from '@/store';
+import { fetchDashboards, setCurrentDashboard } from '@/store/dashboardSlice';
+import { closeModal } from '@/store/uiSlice';
 import {
-  ArrowDownTrayIcon,
-  ArrowUpTrayIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  XCircleIcon,
+    ArrowDownTrayIcon,
+    ArrowUpTrayIcon,
+    CheckCircleIcon,
+    ExclamationTriangleIcon,
+    XCircleIcon,
 } from '@heroicons/react/24/outline';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import BaseModal from './BaseModal';
 
 interface DashboardImportExportModalProps {
   isOpen: boolean;
@@ -166,7 +166,7 @@ export default function DashboardImportExportModal({ isOpen }: DashboardImportEx
         // Import the dashboard
         const result = await dashboardAPI.import(importData);
 
-        const connectionCount = result.data.connection_count || 0;
+        const connectionCount = 0; // Connection count not returned by API
         const widgetCount = result.data.widget_count || 0;
         const successMessage =
           connectionCount > 0
