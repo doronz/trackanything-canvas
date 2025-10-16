@@ -8,12 +8,12 @@ import { updateWidgetContent } from '@/store/widgetSlice';
 import { PluggableWidget } from '@/types';
 import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    EyeIcon,
-    PhotoIcon,
-    PlusIcon,
-    XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EyeIcon,
+  PhotoIcon,
+  PlusIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -374,7 +374,10 @@ export default function GalleryDisplay({
                 <h4 className="font-medium text-gray-900 dark:text-white">
                   {selectedImage.title || 'Image Preview'}
                 </h4>
-                <button onClick={closeModal} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <button
+                  onClick={closeModal}
+                  className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -388,7 +391,9 @@ export default function GalleryDisplay({
                 />
 
                 {selectedImage.caption && (
-                  <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">{selectedImage.caption}</p>
+                  <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+                    {selectedImage.caption}
+                  </p>
                 )}
               </div>
             </div>

@@ -7,8 +7,33 @@ on:
     branches: [production, main]
 
 jobs:
-  # Backend linting (required for PRs)
+  # Detect which files changed
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - 'requirements.txt'
+              - 'docker-compose.yml'
+            frontend:
+              - 'frontend/**'
+              - 'docker-compose.yml'
+
+  # Backend linting (only runs if backend files changed)
   backend-lint:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -47,8 +72,10 @@ jobs:
           mypy . --exclude alembic/versions --exclude __pycache__
         continue-on-error: true # MyPy can be strict, so we allow it to warn
 
-  # Frontend linting (required for PRs)
+  # Frontend linting (only runs if frontend files changed)
   frontend-lint:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -82,9 +109,10 @@ jobs:
           cd frontend
           npm run type-check
 
-  # Backend tests
+  # Backend tests (only runs if backend files changed)
   backend-tests:
-    needs: [backend-lint]
+    needs: [detect-changes, backend-lint]
+    if: needs.detect-changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -108,9 +136,10 @@ jobs:
           pytest --verbose --cov=. --cov-report=xml --cov-report=term
         continue-on-error: true
 
-  # Frontend checks
+  # Frontend checks (only runs if frontend files changed)
   frontend-checks:
-    needs: [frontend-lint]
+    needs: [detect-changes, frontend-lint]
+    if: needs.detect-changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -134,8 +163,10 @@ jobs:
           cd frontend
           npm run build
 
-  # Docker build test
+  # Docker build test (only runs if either changed)
   docker-build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -146,6 +177,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build backend image
+        if: needs.detect-changes.outputs.backend == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -155,6 +187,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build frontend image
+        if: needs.detect-changes.outputs.frontend == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -168,7 +201,7 @@ jobs:
           docker compose config
           docker compose build
 
-  # Security scanning
+  # Security scanning (always runs)
   security-scan:
     runs-on: ubuntu-latest
 

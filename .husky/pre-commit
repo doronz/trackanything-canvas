@@ -1,0 +1,100 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Canvas MCP Client - Smart Pre-commit Hook
+# Only runs linting on changed files
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+printf "${BLUE}🔍 Running pre-commit checks on changed files...${NC}\n"
+
+# Check if Docker is running
+if ! docker info > /dev/null 2>&1; then
+    printf "${RED}✗ Docker is not running. Skipping pre-commit hooks.${NC}\n"
+    printf "${YELLOW}⚠  Please start Docker and run: ./lint.sh${NC}\n"
+    exit 0
+fi
+
+# Check if containers are running
+if ! docker compose ps | grep -q "Up"; then
+    printf "${YELLOW}⚠  Docker containers are not running. Starting...${NC}\n"
+    docker compose up -d
+    sleep 3
+fi
+
+# Get list of changed files
+BACKEND_CHANGED=$(git diff --cached --name-only --diff-filter=ACMR | grep "^backend/" || true)
+FRONTEND_CHANGED=$(git diff --cached --name-only --diff-filter=ACMR | grep "^frontend/" || true)
+
+EXIT_CODE=0
+
+# Backend checks
+if [ -n "$BACKEND_CHANGED" ]; then
+    printf "${BLUE}📝 Backend files changed, running Python linters...${NC}\n"
+
+    # Get only Python files and strip backend/ prefix
+    PY_FILES=$(echo "$BACKEND_CHANGED" | grep "\.py$" | sed 's|^backend/||' || true)
+
+    if [ -n "$PY_FILES" ]; then
+        # Black - run on specific files only (quiet mode)
+        printf "  → Running Black on staged files...\n"
+        echo "$PY_FILES" | tr '\n' '\0' | xargs -0 docker compose exec -T backend black --quiet || EXIT_CODE=1
+
+        # isort - run on specific files only (quiet mode)
+        printf "  → Running isort on staged files...\n"
+        echo "$PY_FILES" | tr '\n' '\0' | xargs -0 docker compose exec -T backend isort --quiet || EXIT_CODE=1
+
+        # Flake8 - run on specific files only (quiet mode, show only errors)
+        printf "  → Running Flake8 on staged files...\n"
+        echo "$PY_FILES" | tr '\n' '\0' | xargs -0 docker compose exec -T backend flake8 --quiet || EXIT_CODE=1
+
+        # Re-add formatted files
+        echo "$BACKEND_CHANGED" | xargs git add
+    fi
+else
+    printf "${GREEN}✓ No backend files changed, skipping backend checks${NC}\n"
+fi
+
+# Frontend checks
+if [ -n "$FRONTEND_CHANGED" ]; then
+    printf "${BLUE}📝 Frontend files changed, running TypeScript/React linters...${NC}\n"
+
+    # Get only lintable files (ts, tsx, js, jsx) and strip frontend/ prefix
+    LINT_FILES=$(echo "$FRONTEND_CHANGED" | grep "\.\(ts\|tsx\|js\|jsx\)$" | sed 's|^frontend/||' || true)
+
+    # Get all formattable files (ts, tsx, js, jsx, json, css, md) and strip frontend/ prefix
+    FORMAT_FILES=$(echo "$FRONTEND_CHANGED" | grep "\.\(ts\|tsx\|js\|jsx\|json\|css\|md\)$" | sed 's|^frontend/||' || true)
+
+    if [ -n "$FORMAT_FILES" ]; then
+        # Prettier - run on specific files only (suppress warnings)
+        printf "  → Running Prettier on staged files...\n"
+        echo "$FORMAT_FILES" | tr '\n' '\0' | xargs -0 docker compose exec -T frontend npx prettier --write --log-level=error || EXIT_CODE=1
+    fi
+
+    if [ -n "$LINT_FILES" ]; then
+        # ESLint - run on specific files only (suppress warnings, show only errors)
+        printf "  → Running ESLint on staged files...\n"
+        echo "$LINT_FILES" | tr '\n' '\0' | xargs -0 docker compose exec -T frontend npx eslint --fix --quiet || EXIT_CODE=1
+    fi
+
+    # Re-add formatted files
+    if [ -n "$FRONTEND_CHANGED" ]; then
+        echo "$FRONTEND_CHANGED" | xargs git add
+    fi
+else
+    printf "${GREEN}✓ No frontend files changed, skipping frontend checks${NC}\n"
+fi
+
+if [ $EXIT_CODE -eq 0 ]; then
+    printf "${GREEN}✓ Pre-commit checks passed!${NC}\n"
+else
+    printf "${RED}✗ Pre-commit checks failed. Please fix the issues and try again.${NC}\n"
+fi
+
+exit $EXIT_CODE
+

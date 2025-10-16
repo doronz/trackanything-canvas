@@ -202,7 +202,9 @@ export default function ListDisplay({
       <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
         <h3 className="font-medium text-gray-900 dark:text-white">
           {blueprint.settings.title || blueprint.name}
-          <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({data?.length || 0} items)</span>
+          <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+            ({data?.length || 0} items)
+          </span>
         </h3>
 
         <div className="flex gap-2">
@@ -238,7 +240,9 @@ export default function ListDisplay({
                 </label>
                 {renderFormField(field, newItemData[field.id], false)}
                 {field.description && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{field.description}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {field.description}
+                  </p>
                 )}
               </div>
             ))}
@@ -278,7 +282,9 @@ export default function ListDisplay({
                       <div key={field.id}>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                           {field.name}
-                          {field.required && <span className="text-red-500 dark:text-red-400 ml-1">*</span>}
+                          {field.required && (
+                            <span className="text-red-500 dark:text-red-400 ml-1">*</span>
+                          )}
                         </label>
                         {renderFormField(field, editingItem[field.id], true)}
                       </div>
@@ -311,12 +317,16 @@ export default function ListDisplay({
 
                       {/* Subtitle */}
                       {listSubtitleField && item[listSubtitleField] && (
-                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{item[listSubtitleField]}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          {item[listSubtitleField]}
+                        </div>
                       )}
 
                       {/* Meta */}
                       {listMetaField && item[listMetaField] && (
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item[listMetaField]}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          {item[listMetaField]}
+                        </div>
                       )}
 
                       {/* Show additional fields if no specific mappings */}
@@ -325,7 +335,10 @@ export default function ListDisplay({
                           {blueprint.dataSchema.fields.slice(1, 3).map(
                             field =>
                               item[field.id] && (
-                                <div key={field.id} className="text-sm text-gray-600 dark:text-gray-400">
+                                <div
+                                  key={field.id}
+                                  className="text-sm text-gray-600 dark:text-gray-400"
+                                >
                                   <span className="font-medium">{field.name}:</span>{' '}
                                   {item[field.id]}
                                 </div>
@@ -368,7 +381,10 @@ export default function ListDisplay({
               <div className="text-lg font-medium">No items yet</div>
               <div className="text-sm mt-1">
                 {interactions.allowAdd ? (
-                  <button onClick={handleShowAddForm} className="text-blue-600 dark:text-blue-400 hover:underline">
+                  <button
+                    onClick={handleShowAddForm}
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                  >
                     Add your first item
                   </button>
                 ) : (

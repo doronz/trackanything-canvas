@@ -7,10 +7,7 @@ import { AppDispatch } from '@/store';
 import { updateWidgetContent } from '@/store/widgetSlice';
 import { PluggableWidget } from '@/types';
 import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import {
-    PlayIcon,
-    SpeakerXMarkIcon
-} from '@heroicons/react/24/outline';
+import { PlayIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -158,7 +155,9 @@ export default function VideoDisplay({
 
           {/* Video URL */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Video URL</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Video URL
+            </label>
             <input
               type="url"
               value={videoUrl}
@@ -173,7 +172,9 @@ export default function VideoDisplay({
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (optional)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Title (optional)
+            </label>
             <input
               type="text"
               value={title}
@@ -185,7 +186,9 @@ export default function VideoDisplay({
 
           {/* Settings */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Playback Settings</h4>
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Playback Settings
+            </h4>
 
             <label className="flex items-center space-x-2">
               <input

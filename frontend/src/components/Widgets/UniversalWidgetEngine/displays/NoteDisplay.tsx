@@ -275,7 +275,10 @@ export default function NoteDisplay({
       {/* Footer with proper controls matching other widgets - always visible */}
       <div className="bg-black dark:bg-white bg-opacity-20 dark:bg-opacity-10 px-3 py-1.5 flex justify-between items-center text-xs border-t border-black dark:border-white border-opacity-20 dark:border-opacity-10 backdrop-blur-sm">
         {/* Left side - Last updated */}
-        <div className="text-gray-700 dark:text-gray-300 font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
+        <div
+          className="text-gray-700 dark:text-gray-300 font-medium"
+          style={{ fontFamily: 'Poppins, sans-serif' }}
+        >
           {(() => {
             const updatedAt = new Date(widget.updated_at);
             const now = new Date();

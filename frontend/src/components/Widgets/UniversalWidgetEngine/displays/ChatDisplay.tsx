@@ -587,7 +587,7 @@ export default function ChatDisplay({
                 </option>
               ))}
             </select>
-            {            /* Custom dropdown arrow */}
+            {/* Custom dropdown arrow */}
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <svg
                 className="w-3 h-3 text-gray-400 dark:text-gray-500"
@@ -614,7 +614,11 @@ export default function ChatDisplay({
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-600 p-3">
           <div className="flex">
             <div className="flex-shrink-0">
-              <svg className="h-4 w-4 text-yellow-400 dark:text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="h-4 w-4 text-yellow-400 dark:text-yellow-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
                   fillRule="evenodd"
                   d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -648,7 +652,9 @@ export default function ChatDisplay({
             >
               <div
                 className={`${message.role === 'user' ? 'max-w-[80%]' : 'w-full'} p-3 rounded-lg ${
-                  message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                  message.role === 'user'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {message.role === 'assistant' ? (
@@ -661,7 +667,10 @@ export default function ChatDisplay({
                           code: ({ node, className, children, ...props }) => {
                             const isInline = !className?.includes('language-');
                             return isInline ? (
-                              <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-xs" {...props}>
+                              <code
+                                className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-xs"
+                                {...props}
+                              >
                                 {children}
                               </code>
                             ) : (

@@ -365,10 +365,14 @@ export default function FormDisplay({
             {renderField(field)}
 
             {/* Field Description */}
-            {field.description && <p className="text-xs text-gray-500 dark:text-gray-400">{field.description}</p>}
+            {field.description && (
+              <p className="text-xs text-gray-500 dark:text-gray-400">{field.description}</p>
+            )}
 
             {/* Field Error */}
-            {errors[field.id] && <p className="text-xs text-red-600 dark:text-red-400">{errors[field.id]}</p>}
+            {errors[field.id] && (
+              <p className="text-xs text-red-600 dark:text-red-400">{errors[field.id]}</p>
+            )}
           </div>
         ))}
 
@@ -393,7 +397,10 @@ export default function FormDisplay({
             </h4>
             <div className="max-h-32 overflow-y-auto space-y-1">
               {data.slice(-5).map((item, index) => (
-                <div key={index} className="text-xs bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-2 rounded">
+                <div
+                  key={index}
+                  className="text-xs bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-2 rounded"
+                >
                   {JSON.stringify(item, null, 2)}
                 </div>
               ))}

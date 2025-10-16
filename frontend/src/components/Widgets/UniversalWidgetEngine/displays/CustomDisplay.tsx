@@ -31,7 +31,9 @@ export default function CustomDisplay({
         <div className="text-6xl">🔧</div>
 
         <div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Custom Display Component</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            Custom Display Component
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             This widget uses a custom display component (
             {blueprint.viewSchema?.displayComponent || 'Unknown'}) that hasn't been implemented yet.

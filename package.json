@@ -1,0 +1,30 @@
+{
+  "name": "canvas-mcp-client",
+  "version": "1.0.0",
+  "description": "Canvas MCP Client - Infinite Canvas Dashboard with MCP Integration",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "./lint.sh",
+    "lint:fix": "./lint-fix.sh",
+    "lint:changed": "bash .husky/lint-changed.sh"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "backend/**/*.py": [
+      "docker compose exec -T backend black",
+      "docker compose exec -T backend isort",
+      "docker compose exec -T backend flake8"
+    ],
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
+      "docker compose exec -T frontend npm run format",
+      "docker compose exec -T frontend npm run lint:fix"
+    ],
+    "frontend/src/**/*.{json,css,md}": [
+      "docker compose exec -T frontend npm run format"
+    ]
+  }
+}

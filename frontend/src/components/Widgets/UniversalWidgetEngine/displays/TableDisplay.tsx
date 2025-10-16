@@ -352,20 +352,26 @@ export default function TableDisplay({
                 <th
                   key={field.id}
                   className={`px-4 py-3 text-left font-medium text-gray-700 dark:text-gray-300 ${
-                    interactions.allowSort ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''
+                    interactions.allowSort
+                      ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600'
+                      : ''
                   }`}
                   onClick={() => handleSort(field.id)}
                 >
                   <div className="flex items-center gap-2">
                     {field.name}
                     {interactions.allowSort && sortField === field.id && (
-                      <span className="text-gray-500 dark:text-gray-400">{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        {sortDirection === 'asc' ? '↑' : '↓'}
+                      </span>
                     )}
                   </div>
                 </th>
               ))}
               {(interactions.allowEdit || interactions.allowDelete) && (
-                <th className="px-4 py-3 text-left font-medium text-gray-700 dark:text-gray-300">Actions</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700 dark:text-gray-300">
+                  Actions
+                </th>
               )}
             </tr>
           </thead>
