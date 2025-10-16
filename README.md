@@ -261,6 +261,7 @@ Security is a top priority. If you discover a security vulnerability, please fol
 ## 🗺️ Roadmap
 
 - [ ] Remote MCP servers with oAuth support
+- [ ] Integrate with OpenAI apps
 - [ ] Attach custom prompt to widgets
 - [ ] Support image and video generation AI models
 - [ ] Add more built-in widgets like Calendar, Music Player, Charts, etc.

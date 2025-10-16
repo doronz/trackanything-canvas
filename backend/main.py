@@ -10,9 +10,11 @@ from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import ValidationError
 
 from database import Base, MCPServer, engine, get_db
 from migrations import run_migrations
@@ -118,6 +120,73 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
+
+# Request/Response logging middleware for debugging
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    """Log all requests and responses for debugging."""
+    logger.debug(f"Incoming request: {request.method} {request.url}")
+    logger.debug(f"Request headers: {dict(request.headers)}")
+
+    # Try to log request body if it exists and is not too large
+    if request.method in ["POST", "PUT", "PATCH"]:
+        try:
+            body = await request.body()
+            if len(body) < 10000:  # Only log if less than 10KB
+                logger.debug(f"Request body: {body.decode('utf-8')[:500]}")  # First 500 chars
+            # Important: Store the body so it can be read again by the endpoint
+            request._body = body
+        except Exception as e:
+            logger.debug(f"Could not log request body: {e}")
+
+    response = await call_next(request)
+    logger.debug(f"Response status: {response.status_code}")
+    return response
+
+
+# Validation error handler
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Handle validation errors with detailed logging."""
+    logger.error(f"Validation error at {request.url}")
+    logger.error(f"Request method: {request.method}")
+    logger.error(f"Validation errors: {exc.errors()}")
+
+    # Try to log the request body for debugging
+    try:
+        body = await request.body()
+        logger.error(f"Request body that failed validation: {body.decode('utf-8')}")
+    except Exception as e:
+        logger.error(f"Could not read request body: {e}")
+
+    return JSONResponse(
+        status_code=422,
+        content={
+            "detail": exc.errors(),
+            "body": exc.body if hasattr(exc, "body") else None,
+            "path": str(request.url),
+            "method": request.method,
+        },
+    )
+
+
+# Pydantic validation error handler
+@app.exception_handler(ValidationError)
+async def pydantic_validation_exception_handler(request: Request, exc: ValidationError):
+    """Handle Pydantic validation errors with detailed logging."""
+    logger.error(f"Pydantic validation error at {request.url}")
+    logger.error(f"Request method: {request.method}")
+    logger.error(f"Validation errors: {exc.errors()}")
+
+    return JSONResponse(
+        status_code=422,
+        content={
+            "detail": exc.errors(),
+            "path": str(request.url),
+            "method": request.method,
+        },
+    )
 
 
 # Global exception handler

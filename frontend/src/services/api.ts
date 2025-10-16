@@ -3,16 +3,16 @@
  * This module provides centralized API access with error handling and type safety.
  */
 
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import {
-  Dashboard,
-  Widget,
-  MCPServer,
   AIConfig,
-  WidgetStandard,
-  WidgetImportResult,
+  Dashboard,
+  MCPServer,
+  Widget,
   WidgetExportOptions,
+  WidgetImportResult,
+  WidgetStandard,
 } from '@/types';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 // Create axios instance with default configuration
 const createAPIClient = (): AxiosInstance => {
@@ -154,7 +154,7 @@ export const widgetAPI = {
 
 // MCP Server API
 export const mcpAPI = {
-  list: (): Promise<AxiosResponse<MCPServer[]>> => api.get('/mcp-servers'),
+  list: (): Promise<AxiosResponse<MCPServer[]>> => api.get('/mcp-servers/'),
 
   get: (id: number): Promise<AxiosResponse<MCPServer>> => api.get(`/mcp-servers/${id}`),
 
@@ -162,7 +162,7 @@ export const mcpAPI = {
     name: string;
     transport: 'stdio' | 'http' | 'sse';
     config: Record<string, any>;
-  }): Promise<AxiosResponse<MCPServer>> => api.post('/mcp-servers', data),
+  }): Promise<AxiosResponse<MCPServer>> => api.post('/mcp-servers/', data),
 
   update: (id: number, data: Partial<MCPServer>): Promise<AxiosResponse<MCPServer>> =>
     api.put(`/mcp-servers/${id}`, data),
