@@ -555,7 +555,7 @@ export default function ChatDisplay({
 
   return (
     <div
-      className="w-full h-full flex flex-col bg-white"
+      className="w-full h-full flex flex-col bg-white dark:bg-gray-800"
       style={{
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
@@ -563,7 +563,7 @@ export default function ChatDisplay({
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-end p-3 border-b">
+      <div className="flex items-center justify-end p-3 border-b border-gray-200 dark:border-gray-700">
         {/* AI Model Selection */}
         <div className="flex items-center space-x-2">
           <div className="relative">
@@ -578,7 +578,7 @@ export default function ChatDisplay({
               onChange={e =>
                 handleConfigSelect(e.target.value ? parseInt(e.target.value) : undefined)
               }
-              className="text-xs border border-gray-300 rounded pl-6 pr-6 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              className="text-xs border border-gray-300 dark:border-gray-600 rounded pl-6 pr-6 py-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none"
             >
               <option value="">Default ({defaultConfig?.model || 'No model'})</option>
               {configs.map(config => (
@@ -587,10 +587,10 @@ export default function ChatDisplay({
                 </option>
               ))}
             </select>
-            {/* Custom dropdown arrow */}
+            {            /* Custom dropdown arrow */}
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <svg
-                className="w-3 h-3 text-gray-400"
+                className="w-3 h-3 text-gray-400 dark:text-gray-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -611,10 +611,10 @@ export default function ChatDisplay({
 
       {/* MCP Tools Warning */}
       {mcpToolsAvailable && !getToolSupportInfo(selectedConfigId)?.supports_tools && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-600 p-3">
           <div className="flex">
             <div className="flex-shrink-0">
-              <svg className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="h-4 w-4 text-yellow-400 dark:text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -623,7 +623,7 @@ export default function ChatDisplay({
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-xs text-yellow-700">
+              <p className="text-xs text-yellow-700 dark:text-yellow-300">
                 MCP tools are available but not supported by this AI provider.
                 {getToolSupportInfo(selectedConfigId)?.tool_support_note}
               </p>
@@ -635,7 +635,7 @@ export default function ChatDisplay({
       {/* Messages */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 space-y-3">
         {messages.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <div className="text-4xl mb-2">💬</div>
             <p className="text-sm">Start a conversation with AI</p>
             <p className="text-xs mt-1">Type your message below</p>
@@ -648,12 +648,12 @@ export default function ChatDisplay({
             >
               <div
                 className={`${message.role === 'user' ? 'max-w-[80%]' : 'w-full'} p-3 rounded-lg ${
-                  message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-900'
+                  message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
                 }`}
               >
                 {message.role === 'assistant' ? (
                   <>
-                    <div className="prose prose-sm max-w-none prose-gray prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-em:text-inherit prose-code:text-inherit prose-pre:bg-gray-200 prose-pre:text-inherit">
+                    <div className="prose prose-sm max-w-none prose-gray dark:prose-invert prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-em:text-inherit prose-code:text-inherit prose-pre:bg-gray-200 dark:prose-pre:bg-gray-600 prose-pre:text-inherit">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
@@ -661,12 +661,12 @@ export default function ChatDisplay({
                           code: ({ node, className, children, ...props }) => {
                             const isInline = !className?.includes('language-');
                             return isInline ? (
-                              <code className="bg-gray-200 px-1 py-0.5 rounded text-xs" {...props}>
+                              <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-xs" {...props}>
                                 {children}
                               </code>
                             ) : (
                               <code
-                                className="block bg-gray-200 p-2 rounded text-xs overflow-x-auto"
+                                className="block bg-gray-200 dark:bg-gray-600 p-2 rounded text-xs overflow-x-auto"
                                 {...props}
                               >
                                 {children}
@@ -697,13 +697,13 @@ export default function ChatDisplay({
                       </ReactMarkdown>
                       {message.isStreaming && (
                         <div className="inline-flex items-center ml-1">
-                          <div className="w-1 h-4 bg-gray-400 animate-pulse"></div>
+                          <div className="w-1 h-4 bg-gray-400 dark:bg-gray-500 animate-pulse"></div>
                         </div>
                       )}
                     </div>
 
                     <div className="flex items-center justify-between mt-2">
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(message.timestamp).toLocaleTimeString()}
                       </div>
 
@@ -711,14 +711,14 @@ export default function ChatDisplay({
                         <div className="flex items-center space-x-1">
                           <button
                             onClick={() => retryMessage(message.id)}
-                            className="p-1 text-gray-400 hover:text-gray-600 rounded transition-colors"
+                            className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded transition-colors"
                             title="Retry message"
                           >
                             <ArrowPathIcon className="w-3 h-3" />
                           </button>
                           <button
                             onClick={() => copyMessage(message.content)}
-                            className="p-1 text-gray-400 hover:text-gray-600 rounded transition-colors"
+                            className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded transition-colors"
                             title="Copy message"
                           >
                             <DocumentDuplicateIcon className="w-3 h-3" />
@@ -742,15 +742,15 @@ export default function ChatDisplay({
 
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 p-3 rounded-lg">
+            <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
               <div className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce"></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce"
                   style={{ animationDelay: '0.1s' }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce"
                   style={{ animationDelay: '0.2s' }}
                 ></div>
               </div>
@@ -762,21 +762,21 @@ export default function ChatDisplay({
       </div>
 
       {/* Input */}
-      <div className="border-t p-3">
+      <div className="border-t border-gray-200 dark:border-gray-700 p-3">
         <div className="flex items-center space-x-2">
           <textarea
             value={inputText}
             onChange={e => setInputText(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
-            className="flex-1 resize-none border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 resize-none border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             rows={2}
             style={{ minHeight: '36px', maxHeight: '120px' }}
           />
           <button
             onClick={sendMessage}
             disabled={!inputText.trim() || isLoading || (!selectedConfig && !defaultConfig)}
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <PaperAirplaneIcon className="w-4 h-4" />
           </button>

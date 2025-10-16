@@ -190,8 +190,8 @@ export default function FormDisplay({
     const value = formData[field.id] || '';
     const error = errors[field.id];
 
-    const baseClasses = `w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-      error ? 'border-red-500' : 'border-gray-300'
+    const baseClasses = `w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+      error ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
     }`;
 
     switch (field.type) {
@@ -242,9 +242,9 @@ export default function FormDisplay({
               type="checkbox"
               checked={Boolean(value)}
               onChange={e => handleFieldChange(field.id, e.target.checked)}
-              className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+              className="w-4 h-4 text-blue-600 dark:text-blue-500 rounded focus:ring-2 focus:ring-blue-500"
             />
-            <span className="text-sm">{field.name}</span>
+            <span className="text-sm text-gray-900 dark:text-white">{field.name}</span>
           </label>
         );
 
@@ -267,7 +267,7 @@ export default function FormDisplay({
 
       case 'multiselect':
         return (
-          <div className="space-y-2 max-h-32 overflow-y-auto border rounded-md p-2">
+          <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700">
             {field.options?.map(option => (
               <label key={option} className="flex items-center space-x-2">
                 <input
@@ -284,9 +284,9 @@ export default function FormDisplay({
                       );
                     }
                   }}
-                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 dark:text-blue-500 rounded focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-sm">{option}</span>
+                <span className="text-sm text-gray-900 dark:text-white">{option}</span>
               </label>
             ))}
           </div>
@@ -320,7 +320,7 @@ export default function FormDisplay({
             type="color"
             value={value}
             onChange={e => handleFieldChange(field.id, e.target.value)}
-            className="w-full h-10 border border-gray-300 rounded-md cursor-pointer"
+            className="w-full h-10 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer bg-white dark:bg-gray-700"
             required={field.required}
           />
         );
@@ -343,7 +343,7 @@ export default function FormDisplay({
 
   return (
     <div
-      className="w-full h-full p-4 overflow-auto"
+      className="w-full h-full p-4 overflow-auto bg-white dark:bg-gray-800"
       style={{
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
@@ -355,7 +355,7 @@ export default function FormDisplay({
           <div key={field.id} className="space-y-1">
             {/* Field Label */}
             {field.type !== 'boolean' && (
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 {field.name}
                 {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
@@ -365,10 +365,10 @@ export default function FormDisplay({
             {renderField(field)}
 
             {/* Field Description */}
-            {field.description && <p className="text-xs text-gray-500">{field.description}</p>}
+            {field.description && <p className="text-xs text-gray-500 dark:text-gray-400">{field.description}</p>}
 
             {/* Field Error */}
-            {errors[field.id] && <p className="text-xs text-red-600">{errors[field.id]}</p>}
+            {errors[field.id] && <p className="text-xs text-red-600 dark:text-red-400">{errors[field.id]}</p>}
           </div>
         ))}
 
@@ -378,7 +378,7 @@ export default function FormDisplay({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-blue-500 dark:bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
@@ -387,18 +387,18 @@ export default function FormDisplay({
 
         {/* Existing Data Preview */}
         {Array.isArray(data) && data.length > 0 && (
-          <div className="pt-4 border-t">
-            <h4 className="text-sm font-medium text-gray-700 mb-2">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Submitted Data ({data.length} items)
             </h4>
             <div className="max-h-32 overflow-y-auto space-y-1">
               {data.slice(-5).map((item, index) => (
-                <div key={index} className="text-xs bg-gray-50 p-2 rounded">
+                <div key={index} className="text-xs bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white p-2 rounded">
                   {JSON.stringify(item, null, 2)}
                 </div>
               ))}
               {data.length > 5 && (
-                <div className="text-xs text-gray-500 text-center">
+                <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   ... and {data.length - 5} more items
                 </div>
               )}

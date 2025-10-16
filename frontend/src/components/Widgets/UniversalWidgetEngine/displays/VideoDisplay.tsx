@@ -3,18 +3,16 @@
  * Renders video player with support for YouTube, Vimeo, and direct video URLs
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import { PluggableWidget } from '@/types';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { updateWidgetContent } from '@/store/widgetSlice';
+import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import {
-  PlayIcon,
-  PauseIcon,
-  SpeakerWaveIcon,
-  SpeakerXMarkIcon,
+    PlayIcon,
+    SpeakerXMarkIcon
 } from '@heroicons/react/24/outline';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 interface VideoDisplayProps {
   widget: PluggableWidget;
@@ -154,40 +152,40 @@ export default function VideoDisplay({
 
   if (isEditing) {
     return (
-      <div className="w-full h-full p-4 bg-white overflow-y-auto">
+      <div className="w-full h-full p-4 bg-white dark:bg-gray-800 overflow-y-auto">
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-gray-900">Video Settings</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Video Settings</h3>
 
           {/* Video URL */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Video URL</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Video URL</label>
             <input
               type="url"
               value={videoUrl}
               onChange={e => setVideoUrl(e.target.value)}
               placeholder="https://youtube.com/watch?v=... or direct video URL"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Supports YouTube, Vimeo, and direct video URLs
             </p>
           </div>
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title (optional)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (optional)</label>
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Video title..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           {/* Settings */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-gray-700">Playback Settings</h4>
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Playback Settings</h4>
 
             <label className="flex items-center space-x-2">
               <input
@@ -196,7 +194,7 @@ export default function VideoDisplay({
                 onChange={e => setAutoplay(e.target.checked)}
                 className="rounded border-gray-300"
               />
-              <span className="text-sm text-gray-700">Autoplay</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Autoplay</span>
             </label>
 
             <label className="flex items-center space-x-2">
@@ -204,9 +202,9 @@ export default function VideoDisplay({
                 type="checkbox"
                 checked={controls}
                 onChange={e => setControls(e.target.checked)}
-                className="rounded border-gray-300"
+                className="rounded border-gray-300 dark:border-gray-600"
               />
-              <span className="text-sm text-gray-700">Show controls</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Show controls</span>
             </label>
 
             <label className="flex items-center space-x-2">
@@ -214,9 +212,9 @@ export default function VideoDisplay({
                 type="checkbox"
                 checked={muted}
                 onChange={e => setMuted(e.target.checked)}
-                className="rounded border-gray-300"
+                className="rounded border-gray-300 dark:border-gray-600"
               />
-              <span className="text-sm text-gray-700">Muted</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Muted</span>
             </label>
 
             <label className="flex items-center space-x-2">
@@ -224,9 +222,9 @@ export default function VideoDisplay({
                 type="checkbox"
                 checked={loop}
                 onChange={e => setLoop(e.target.checked)}
-                className="rounded border-gray-300"
+                className="rounded border-gray-300 dark:border-gray-600"
               />
-              <span className="text-sm text-gray-700">Loop</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Loop</span>
             </label>
           </div>
 
@@ -235,13 +233,13 @@ export default function VideoDisplay({
             <button
               onClick={handleSave}
               disabled={!videoUrl.trim()}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
+              className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50"
             >
               Save
             </button>
             <button
               onClick={handleCancel}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              className="px-4 py-2 bg-gray-500 dark:bg-gray-600 text-white rounded-md hover:bg-gray-600 dark:hover:bg-gray-700"
             >
               Cancel
             </button>
@@ -253,14 +251,14 @@ export default function VideoDisplay({
 
   if (!embedUrl) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-50">
+      <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-800">
         <div className="text-center">
-          <PlayIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-          <p className="text-sm text-gray-500 mb-4">No video configured</p>
+          <PlayIcon className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">No video configured</p>
           {interactions.allowEdit !== false && (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700"
             >
               Add Video
             </button>
@@ -272,23 +270,23 @@ export default function VideoDisplay({
 
   return (
     <div
-      className="w-full h-full flex flex-col bg-white"
+      className="w-full h-full flex flex-col bg-white dark:bg-gray-800"
       style={{
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
         color: styleProps?.textColor || '#374151',
-        backgroundColor: styleProps?.backgroundColor || '#ffffff',
+        backgroundColor: styleProps?.backgroundColor || undefined,
       }}
     >
       {/* Header */}
       {title && (
-        <div className="bg-gray-50 border-b border-gray-200 p-3 text-sm">
+        <div className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 p-3 text-sm">
           <div className="flex items-center justify-between">
-            <h4 className="font-medium text-gray-900">{title}</h4>
+            <h4 className="font-medium text-gray-900 dark:text-white">{title}</h4>
             {interactions.allowEdit !== false && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-xs text-gray-600 hover:text-gray-900"
+                className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
               >
                 Edit
               </button>
@@ -334,7 +332,7 @@ export default function VideoDisplay({
 
       {/* Video info */}
       {(isYouTube || isVimeo) && (
-        <div className="bg-gray-50 border-t border-gray-200 text-gray-600 p-2 text-xs">
+        <div className="bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 p-2 text-xs">
           <div className="flex items-center justify-between">
             <span>
               {isYouTube && '📺 YouTube'}

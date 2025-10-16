@@ -3,15 +3,15 @@
  * Renders note/sticky note widgets with textarea input and auto-save
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import { PluggableWidget } from '@/types';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store';
-import { updateWidgetContent, deleteWidget, selectWidget, updateWidget } from '@/store/widgetSlice';
-import { openWidgetSettingsPanel, openWidgetImportExportModal } from '@/store/uiSlice';
 import Tooltip from '@/components/UI/Tooltip';
+import { AppDispatch } from '@/store';
+import { openWidgetImportExportModal, openWidgetSettingsPanel } from '@/store/uiSlice';
+import { deleteWidget, selectWidget, updateWidget } from '@/store/widgetSlice';
+import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 interface NoteDisplayProps {
   widget: PluggableWidget;
@@ -226,7 +226,7 @@ export default function NoteDisplay({
         {(isSelected || isHovered) && (
           <button
             onClick={handleDelete}
-            className="p-1 rounded hover:text-red-600 hover:bg-black hover:bg-opacity-10 transition-all flex-shrink-0"
+            className="p-1 rounded hover:text-red-600 dark:hover:text-red-400 hover:bg-black dark:hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-10 transition-all flex-shrink-0"
             style={{
               width: '24px',
               height: '24px',
@@ -260,10 +260,10 @@ export default function NoteDisplay({
           <div
             className={`absolute bottom-2 right-2 text-xs px-2 py-1 rounded-md transition-all duration-200 ${
               isOverLimit
-                ? 'bg-red-100 text-red-700'
+                ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
                 : isNearLimit
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'bg-black bg-opacity-10 text-gray-600'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+                  : 'bg-black bg-opacity-10 dark:bg-opacity-20 text-gray-600 dark:text-gray-400'
             }`}
           >
             {charCount.toLocaleString()}
@@ -273,9 +273,9 @@ export default function NoteDisplay({
       </div>
 
       {/* Footer with proper controls matching other widgets - always visible */}
-      <div className="bg-black bg-opacity-20 px-3 py-1.5 flex justify-between items-center text-xs border-t border-black border-opacity-20 backdrop-blur-sm">
+      <div className="bg-black dark:bg-white bg-opacity-20 dark:bg-opacity-10 px-3 py-1.5 flex justify-between items-center text-xs border-t border-black dark:border-white border-opacity-20 dark:border-opacity-10 backdrop-blur-sm">
         {/* Left side - Last updated */}
-        <div className="text-gray-700 font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
+        <div className="text-gray-700 dark:text-gray-300 font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
           {(() => {
             const updatedAt = new Date(widget.updated_at);
             const now = new Date();
@@ -310,7 +310,7 @@ export default function NoteDisplay({
                 dispatch(openWidgetSettingsPanel(widget.id));
               }}
               onMouseDown={e => e.stopPropagation()}
-              className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-black hover:bg-opacity-10 rounded transition-colors"
+              className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-black dark:hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-10 rounded transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -331,7 +331,7 @@ export default function NoteDisplay({
                 dispatch(openWidgetImportExportModal(widget.id));
               }}
               onMouseDown={e => e.stopPropagation()}
-              className="p-1.5 text-gray-600 hover:text-green-600 hover:bg-black hover:bg-opacity-10 rounded transition-colors"
+              className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-black dark:hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-10 rounded transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -352,7 +352,7 @@ export default function NoteDisplay({
                 dispatch(deleteWidget(widget.id));
               }}
               onMouseDown={e => e.stopPropagation()}
-              className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-black hover:bg-opacity-10 rounded transition-colors"
+              className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-black dark:hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-10 rounded transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

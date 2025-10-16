@@ -184,14 +184,14 @@ export default function TextDisplay({
 
   if (!content && mode === 'preview') {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-50">
+      <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-800">
         <div className="text-center">
-          <DocumentTextIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-          <p className="text-sm text-gray-500 mb-4">No content yet</p>
+          <DocumentTextIcon className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">No content yet</p>
           {canEdit && (
             <button
               onClick={() => setMode('edit')}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700"
             >
               Start Writing
             </button>
@@ -203,7 +203,7 @@ export default function TextDisplay({
 
   return (
     <div
-      className="w-full h-full flex flex-col bg-white"
+      className="w-full h-full flex flex-col bg-white dark:bg-gray-800"
       style={{
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
@@ -214,8 +214,8 @@ export default function TextDisplay({
     >
       {/* Header with mode toggle */}
       {canEdit && (isHovered || isSelected || mode === 'edit') && (
-        <div className="flex items-center justify-between p-3 border-b bg-gray-50">
-          <div className="text-sm font-medium text-gray-700">
+        <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+          <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {blueprint.settings.title || 'Text Document'}
           </div>
 
@@ -224,8 +224,8 @@ export default function TextDisplay({
               onClick={toggleMode}
               className={`flex items-center space-x-1 px-3 py-1 rounded-md text-xs transition-colors ${
                 mode === 'edit'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                  : 'bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500'
               }`}
             >
               {mode === 'edit' ? (
@@ -251,9 +251,8 @@ export default function TextDisplay({
             value={content}
             onChange={handleContentChange}
             placeholder={contentField?.placeholder || 'Start writing... (Supports Markdown)'}
-            className="w-full h-full resize-none border-none focus:outline-none p-4 text-sm leading-relaxed"
+            className="w-full h-full resize-none border-none focus:outline-none p-4 text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
             style={{
-              color: styleProps.textColor || '#374151',
               fontSize: styleProps.fontSize || 14,
               fontFamily: 'Poppins, sans-serif',
             }}
@@ -271,7 +270,7 @@ export default function TextDisplay({
 
       {/* Character counter for edit mode */}
       {mode === 'edit' && (isHovered || isSelected) && (
-        <div className="px-4 py-2 border-t bg-gray-50 text-xs text-gray-500">
+        <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400">
           {content.length.toLocaleString()} characters
           {content.split('\n').length > 1 && (
             <span className="ml-2">• {content.split('\n').length} lines</span>

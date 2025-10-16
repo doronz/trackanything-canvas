@@ -3,20 +3,20 @@
  * Renders images in gallery format with upload, preview, and management features
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import { PluggableWidget } from '@/types';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { updateWidgetContent } from '@/store/widgetSlice';
+import { PluggableWidget } from '@/types';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import {
-  PhotoIcon,
-  XMarkIcon,
-  EyeIcon,
-  PlusIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    EyeIcon,
+    PhotoIcon,
+    PlusIcon,
+    XMarkIcon,
 } from '@heroicons/react/24/outline';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 interface GalleryDisplayProps {
   widget: PluggableWidget;
@@ -200,7 +200,7 @@ export default function GalleryDisplay({
 
   return (
     <div
-      className="w-full h-full flex flex-col bg-white"
+      className="w-full h-full flex flex-col bg-white dark:bg-gray-800"
       style={{
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
@@ -208,18 +208,18 @@ export default function GalleryDisplay({
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
-        <h3 className="font-medium text-gray-900">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="font-medium text-gray-900 dark:text-white">
           {blueprint.settings.title || 'Gallery'}
           {images.length > 0 && (
-            <span className="ml-2 text-sm text-gray-500">({images.length})</span>
+            <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({images.length})</span>
           )}
         </h3>
 
         {interactions.allowAdd !== false && (
           <button
             onClick={() => setIsAddingImage(true)}
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700"
             title="Add image"
           >
             <PlusIcon className="w-4 h-4" />
@@ -229,20 +229,20 @@ export default function GalleryDisplay({
 
       {/* Add image form */}
       {isAddingImage && (
-        <div className="p-4 border-b bg-gray-50">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
           <div className="flex items-center space-x-2">
             <input
               type="url"
               value={newImageUrl}
               onChange={e => setNewImageUrl(e.target.value)}
               placeholder="Enter image URL..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               autoFocus
             />
             <button
               onClick={addImage}
               disabled={!newImageUrl.trim()}
-              className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 text-sm"
+              className="px-3 py-2 bg-green-500 dark:bg-green-600 text-white rounded-md hover:bg-green-600 dark:hover:bg-green-700 disabled:opacity-50 text-sm"
             >
               Add
             </button>
@@ -251,7 +251,7 @@ export default function GalleryDisplay({
                 setIsAddingImage(false);
                 setNewImageUrl('');
               }}
-              className="px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm"
+              className="px-3 py-2 bg-gray-500 dark:bg-gray-600 text-white rounded-md hover:bg-gray-600 dark:hover:bg-gray-700 text-sm"
             >
               Cancel
             </button>
@@ -262,9 +262,9 @@ export default function GalleryDisplay({
       {/* Carousel */}
       <div className="flex-1 overflow-hidden relative">
         {images.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
             <div className="text-center">
-              <PhotoIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+              <PhotoIcon className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
               <p className="text-sm">No images yet</p>
               <p className="text-xs mt-1">Add your first image to get started</p>
             </div>
@@ -324,10 +324,10 @@ export default function GalleryDisplay({
             </div>
 
             {/* Image info and controls */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 border-t border-gray-200 p-3">
+            <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 border-t border-gray-200 dark:border-gray-700 p-3">
               {/* Caption */}
               {images[currentIndex]?.caption && (
-                <p className="text-sm text-gray-700 text-center mb-3">
+                <p className="text-sm text-gray-700 dark:text-gray-300 text-center mb-3">
                   {images[currentIndex].caption}
                 </p>
               )}
@@ -351,7 +351,7 @@ export default function GalleryDisplay({
               )}
 
               {/* Image counter */}
-              <div className="text-center text-xs text-gray-500">
+              <div className="text-center text-xs text-gray-500 dark:text-gray-400">
                 {images.length > 1 && (
                   <span>
                     {currentIndex + 1} of {images.length}
@@ -368,13 +368,13 @@ export default function GalleryDisplay({
       {isModalOpen && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
           <div className="max-w-4xl max-h-full p-4">
-            <div className="bg-white rounded-lg overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-4 border-b">
-                <h4 className="font-medium text-gray-900">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h4 className="font-medium text-gray-900 dark:text-white">
                   {selectedImage.title || 'Image Preview'}
                 </h4>
-                <button onClick={closeModal} className="p-1 text-gray-400 hover:text-gray-600">
+                <button onClick={closeModal} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -388,7 +388,7 @@ export default function GalleryDisplay({
                 />
 
                 {selectedImage.caption && (
-                  <p className="mt-4 text-sm text-gray-600 text-center">{selectedImage.caption}</p>
+                  <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">{selectedImage.caption}</p>
                 )}
               </div>
             </div>
