@@ -30,6 +30,15 @@ Canvas MCP Client is an **open-source, self-hostable dashboard application** bui
 
 Perfect for AI power users, developers, content creators, and anyone who wants a customizable workspace for managing AI tools and services.
 
+## 🎥 Quick Demo
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=SwHP6ae9v_w">
+    <img src="https://img.youtube.com/vi/SwHP6ae9v_w/maxresdefault.jpg" alt="Canvas MCP Client Demo" width="600">
+  </a>
+  <p><i>Click to watch the Canvas MCP Client demo video</i></p>
+</div>
+
 ## ✨ Features
 
 ### Core Functionality
