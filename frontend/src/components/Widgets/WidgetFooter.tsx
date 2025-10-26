@@ -1,18 +1,30 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import Tooltip from '@/components/UI/Tooltip';
 import { AppDispatch } from '@/store';
 import { openWidgetImportExportModal, openWidgetSettingsPanel } from '@/store/uiSlice';
 import { selectWidget } from '@/store/widgetSlice';
 import { Widget } from '@/types';
-import Tooltip from '@/components/UI/Tooltip';
-import { PaintBrushIcon, ArrowDownTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  PaintBrushIcon,
+  SparklesIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 interface WidgetFooterProps {
   widget: Widget;
   onDelete: (e: React.MouseEvent) => void;
+  onToggleInitPrompt?: (e: React.MouseEvent) => void;
+  hasInitPrompt?: boolean;
 }
 
-export default function WidgetFooter({ widget, onDelete }: WidgetFooterProps) {
+export default function WidgetFooter({
+  widget,
+  onDelete,
+  onToggleInitPrompt,
+  hasInitPrompt,
+}: WidgetFooterProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   const formatTimeAgo = (dateString: string): string => {
@@ -65,6 +77,19 @@ export default function WidgetFooter({ widget, onDelete }: WidgetFooterProps) {
 
       {/* Right side - Action buttons */}
       <div className="flex items-center space-x-1">
+        {/* AI Prompt Toggle Button - Only show if widget has an init_prompt */}
+        {hasInitPrompt && onToggleInitPrompt && (
+          <Tooltip content="Show/Hide AI Prompt" position="top">
+            <button
+              onClick={onToggleInitPrompt}
+              onMouseDown={e => e.stopPropagation()}
+              className="p-1.5 text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+            >
+              <SparklesIcon className="w-3.5 h-3.5" />
+            </button>
+          </Tooltip>
+        )}
+
         {/* Customize Appearance Button */}
         <Tooltip content="Customize Appearance" position="top">
           <button

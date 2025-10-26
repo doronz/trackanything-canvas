@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
+import requests  # type: ignore
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, Depends, HTTPException
 from markdownify import markdownify as md

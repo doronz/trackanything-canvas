@@ -8,7 +8,7 @@ import re
 from typing import Dict, Optional
 from urllib.parse import urljoin, urlparse
 
-import requests
+import requests  # type: ignore
 from bs4 import BeautifulSoup
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, HttpUrl

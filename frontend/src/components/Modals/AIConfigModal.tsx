@@ -636,7 +636,7 @@ export default function AIConfigModal({ isOpen }: AIConfigModalProps) {
                   <input
                     type="number"
                     min="1"
-                    max="4000"
+                    max="1000000"
                     value={formData.parameters.max_tokens}
                     onChange={e =>
                       setFormData(prev => ({

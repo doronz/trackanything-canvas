@@ -3,19 +3,13 @@
  * Renders rich Kanban board with drag-and-drop task management
  */
 
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { updateWidgetContent } from '@/store/widgetSlice';
-import { UniversalWidgetBlueprint } from '@/types/universalWidget';
 import { PluggableWidget } from '@/types';
-import {
-  PlusIcon,
-  XMarkIcon,
-  EllipsisVerticalIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { UniversalWidgetBlueprint } from '@/types/universalWidget';
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 interface KanbanDisplayProps {
@@ -115,7 +109,8 @@ export default function KanbanDisplay({
         setColumns(content.columns);
       }
     }
-  }, [content, columns]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]); // Removed 'columns' to prevent infinite loop
 
   // Save content when it changes
   useEffect(() => {

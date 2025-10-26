@@ -60,6 +60,7 @@ def widget_to_response(widget: Widget, db: Session) -> Dict[str, Any]:
         "id": widget.id,
         "dashboard_id": widget.dashboard_id,
         "title": widget.title,
+        "init_prompt": widget.init_prompt,
         "x": widget.x,
         "y": widget.y,
         "width": widget.width,
@@ -85,6 +86,7 @@ class WidgetCreate(BaseModel):
     dashboard_id: int
     widget_blueprint_id: int  # Required for all widgets
     title: Optional[str] = None
+    init_prompt: Optional[str] = None
     x: float
     y: float
     width: float = 512
@@ -97,6 +99,7 @@ class WidgetCreate(BaseModel):
 
 class WidgetUpdate(BaseModel):
     title: Optional[str] = None
+    init_prompt: Optional[str] = None
     x: Optional[float] = None
     y: Optional[float] = None
     width: Optional[float] = None
@@ -112,6 +115,7 @@ class WidgetResponse(BaseModel):
     id: int
     dashboard_id: int
     title: Optional[str]
+    init_prompt: Optional[str] = None
     x: float
     y: float
     width: float

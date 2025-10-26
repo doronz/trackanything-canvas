@@ -76,12 +76,24 @@ body {
   cursor: default;
 }
 
+/* Adjust content height when init prompt header is visible */
+.widget-container:not(.sticky-note-widget).has-init-prompt-header .widget-content {
+  height: calc(
+    100% - 130px
+  ); /* Account for header (40px), init prompt header (~50px), and footer (40px) */
+}
+
 .widget-container:not(.sticky-note-widget) .widget-content:only-child {
   height: calc(100% - 40px); /* Account for footer height */
   border-top-left-radius: calc(0.5rem - 2px);
   border-top-right-radius: calc(0.5rem - 2px);
   border-bottom-left-radius: 0; /* Footer will have rounded bottom */
   border-bottom-right-radius: 0; /* Footer will have rounded bottom */
+}
+
+/* Adjust content height when init prompt header is visible (no title header) */
+.widget-container:not(.sticky-note-widget).has-init-prompt-header .widget-content:only-child {
+  height: calc(100% - 90px); /* Account for init prompt header (~50px) and footer (40px) */
 }
 
 /* Sticky note specific styles - removed to prevent conflicts */

@@ -50,6 +50,57 @@ class ChatResponse(BaseModel):
     tools_used: List[Dict[str, Any]] = []
 
 
+class SimpleGenerateRequest(BaseModel):
+    prompt: str
+    ai_config_id: Optional[int] = None
+
+
+class SimpleGenerateResponse(BaseModel):
+    response: str
+
+
+@router.post("/generate", response_model=SimpleGenerateResponse)
+async def generate_content(request: SimpleGenerateRequest, db: Session = Depends(get_db)):
+    """
+    Simple content generation endpoint without tool calling.
+    Useful for widget init_prompt content generation.
+    """
+    # Get AI configuration
+    if request.ai_config_id:
+        ai_config = db.query(AIConfig).filter(AIConfig.id == request.ai_config_id).first()
+    else:
+        ai_config = db.query(AIConfig).filter(AIConfig.is_default.is_(True)).first()
+
+    if not ai_config:
+        raise HTTPException(status_code=404, detail="No AI configuration found")
+
+    # Decrypt API key if needed
+    api_key = None
+    if ai_config.api_key_encrypted:
+        api_key = encryption_service.decrypt(ai_config.api_key_encrypted)
+
+    # Create simple message
+    messages = [{"role": "user", "content": request.prompt}]
+
+    try:
+        # Call AI API based on provider WITHOUT tools
+        if ai_config.provider == "openai":
+            response_content = await _simple_call_openai(api_key, ai_config, messages)
+        elif ai_config.provider == "anthropic":
+            response_content = await _simple_call_anthropic(api_key, ai_config, messages)
+        elif ai_config.provider == "ollama":
+            response_content = await _simple_call_ollama(ai_config, messages)
+        elif ai_config.provider == "gemini":
+            response_content = await _simple_call_gemini(api_key, ai_config, messages)
+        else:
+            raise HTTPException(status_code=400, detail=f"Provider '{ai_config.provider}' not supported")
+
+        return SimpleGenerateResponse(response=response_content)
+    except Exception as e:
+        logger.error(f"Error generating content: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating content: {str(e)}")
+
+
 @router.post("/chat", response_model=ChatResponse)
 async def chat_with_ai(chat_request: ChatRequest, db: Session = Depends(get_db)):
     """
@@ -617,7 +668,20 @@ async def _call_ollama(
 
         # Initial AI call
         start_time = time.time()
-        response = await client.chat(**request_params)
+        try:
+            response = await client.chat(**request_params)
+        except Exception as e:
+            # If model doesn't support tools (400 error), retry without tools
+            error_msg = str(e).lower()
+            if "does not support tools" in error_msg or "400" in error_msg:
+                logger.warning(f"Ollama model {ai_config.model} does not support tools, retrying without tools")
+                # Remove tools from request and retry
+                if "tools" in request_params:
+                    del request_params["tools"]
+                response = await client.chat(**request_params)
+            else:
+                raise
+
         end_time = time.time()
 
         # Enhanced debug logging for Ollama response
@@ -1593,3 +1657,123 @@ async def _stream_gemini_direct(gemini_client, ai_config: AIConfig, messages: Li
     except Exception as e:
         logger.error(f"Gemini direct streaming error: {str(e)}")
         yield {"error": f"Gemini direct streaming error: {str(e)}"}
+
+
+# Simple generation functions without tool calling
+
+
+async def _simple_call_openai(api_key: str, ai_config: AIConfig, messages: List[Dict]) -> str:
+    """Call OpenAI API without tool support."""
+    client = openai.AsyncOpenAI(api_key=api_key, base_url=ai_config.api_endpoint if ai_config.api_endpoint else None)
+
+    request_params = {
+        "model": ai_config.model,
+        "messages": messages,
+        "temperature": ai_config.parameters.get("temperature", 0.7),
+        "max_tokens": ai_config.parameters.get("max_tokens", 1000),
+    }
+
+    response = await client.chat.completions.create(**request_params)
+    return response.choices[0].message.content or ""
+
+
+async def _simple_call_anthropic(api_key: str, ai_config: AIConfig, messages: List[Dict]) -> str:
+    """Call Anthropic API without tool support."""
+    client = anthropic.AsyncAnthropic(
+        api_key=api_key, base_url=ai_config.api_endpoint if ai_config.api_endpoint else None
+    )
+
+    # Separate system messages from user/assistant messages
+    system_message = ""
+    chat_messages = []
+    for msg in messages:
+        if msg["role"] == "system":
+            system_message += msg["content"] + "\n"
+        else:
+            chat_messages.append({"role": msg["role"], "content": msg["content"]})
+
+    request_params = {
+        "model": ai_config.model,
+        "max_tokens": ai_config.parameters.get("max_tokens", 1000),
+        "messages": chat_messages,
+    }
+
+    if system_message:
+        request_params["system"] = system_message.strip()
+
+    if "temperature" in ai_config.parameters:
+        request_params["temperature"] = ai_config.parameters["temperature"]
+
+    response = await client.messages.create(**request_params)
+
+    text_content = ""
+    for block in response.content:
+        if hasattr(block, "text"):
+            text_content += block.text
+
+    return text_content
+
+
+async def _simple_call_ollama(ai_config: AIConfig, messages: List[Dict]) -> str:
+    """Call Ollama API without tool support."""
+    from ollama import AsyncClient
+
+    client_kwargs = {}
+    if ai_config.api_endpoint:
+        client_kwargs["host"] = ai_config.api_endpoint
+
+    client = AsyncClient(**client_kwargs)
+
+    # Convert messages to Ollama format
+    ollama_messages = []
+    for msg in messages:
+        ollama_messages.append({"role": msg["role"], "content": msg["content"]})
+
+    # Prepare request parameters WITHOUT tools
+    request_params = {"model": ai_config.model, "messages": ollama_messages}
+
+    # Add options from ai_config.parameters if available
+    if ai_config.parameters:
+        options = {}
+        if "temperature" in ai_config.parameters:
+            options["temperature"] = ai_config.parameters["temperature"]
+        if "max_tokens" in ai_config.parameters:
+            options["num_predict"] = ai_config.parameters["max_tokens"]
+        if options:
+            request_params["options"] = options
+
+    logger.debug(f"Simple Ollama request (no tools): {request_params}")
+
+    response = await client.chat(**request_params)
+    message = response.get("message", {})
+    return message.get("content", "")
+
+
+async def _simple_call_gemini(api_key: str, ai_config: AIConfig, messages: List[Dict]) -> str:
+    """Call Gemini API without tool support."""
+    import google.generativeai as genai
+
+    genai.configure(api_key=api_key)
+
+    # Convert messages to Gemini format
+    content_messages = []
+    for msg in messages:
+        if msg["role"] == "user":
+            content_messages.append(msg["content"])
+        elif msg["role"] == "assistant":
+            content_messages.append(f"Assistant: {msg['content']}")
+        elif msg["role"] == "system":
+            content_messages.insert(0, f"System: {msg['content']}")
+
+    content = "\n".join(content_messages)
+
+    model = genai.GenerativeModel(ai_config.model)
+    response = await model.generate_content_async(
+        content,
+        generation_config=genai.types.GenerationConfig(
+            temperature=ai_config.parameters.get("temperature", 0.7),
+            max_output_tokens=ai_config.parameters.get("max_tokens", 1000),
+        ),
+    )
+
+    return response.text

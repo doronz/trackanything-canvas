@@ -14,6 +14,7 @@ export interface Widget {
   id: number;
   dashboard_id: number;
   title?: string;
+  init_prompt?: string;
   x: number;
   y: number;
   width: number;

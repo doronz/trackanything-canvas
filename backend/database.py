@@ -53,6 +53,7 @@ class Widget(Base):
     id = Column(Integer, primary_key=True, index=True)
     dashboard_id = Column(Integer, nullable=False)
     title = Column(String(255))
+    init_prompt = Column(Text)  # Optional AI prompt to generate widget content
     x = Column(Float, nullable=False)
     y = Column(Float, nullable=False)
     width = Column(Float, nullable=False)

@@ -9,7 +9,7 @@ import { openWidgetImportExportModal, openWidgetSettingsPanel } from '@/store/ui
 import { deleteWidget, selectWidget, updateWidget } from '@/store/widgetSlice';
 import { PluggableWidget } from '@/types';
 import { UniversalWidgetBlueprint } from '@/types/universalWidget';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -59,6 +59,34 @@ export default function NoteDisplay({
   const [isHovered, setIsHovered] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, setTitleValue] = useState(widget.title || '');
+
+  // Check if note has actual content (for showing sparkles button)
+  const hasContent = () => {
+    const content = text?.trim() || '';
+    return content && content !== 'Add your note...';
+  };
+
+  // Handle toggling init prompt visibility
+  const handleToggleInitPrompt = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Toggle the _showInitPrompt flag
+    const newSettings = { ...widget.settings };
+    if (newSettings._showInitPrompt) {
+      // Currently showing, so hide it
+      delete newSettings._showInitPrompt;
+    } else {
+      // Currently hidden, so show it
+      newSettings._showInitPrompt = Date.now();
+    }
+
+    dispatch(
+      updateWidget({
+        id: widget.id,
+        data: { settings: newSettings },
+      })
+    );
+  };
 
   // Debounced save to backend - use useRef to avoid circular dependencies
   const saveToBackendRef = useRef<((newText: string) => void) | null>(null);
@@ -304,6 +332,19 @@ export default function NoteDisplay({
 
         {/* Right side - Action buttons */}
         <div className="flex items-center space-x-1">
+          {/* AI Prompt Toggle Button - Show if widget has content or init_prompt */}
+          {(hasContent() || widget.init_prompt) && (
+            <Tooltip content="Show/Hide AI Prompt" position="top">
+              <button
+                onClick={handleToggleInitPrompt}
+                onMouseDown={e => e.stopPropagation()}
+                className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-black dark:hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-10 rounded transition-colors"
+              >
+                <SparklesIcon className="w-3.5 h-3.5" />
+              </button>
+            </Tooltip>
+          )}
+
           {/* Customize Appearance Button */}
           <Tooltip content="Customize Appearance" position="top">
             <button
