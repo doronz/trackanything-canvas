@@ -66,7 +66,7 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
       hideTitle,
     };
 
-    // Apply changes for real-time preview without saving to backend
+    // Apply changes and persist to backend immediately
     dispatch(
       updateWidget({
         id: widget.id,
@@ -79,8 +79,6 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
             ...newSettings,
           },
         },
-        skipBackend: true, // Use skipBackend flag to prevent saving while previewing
-        currentWidget: widget, // Pass current widget to preserve all properties
       })
     );
   }, [

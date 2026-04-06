@@ -813,8 +813,7 @@ export default function WidgetRenderer({
   const TOOLBAR_ZONE = 44;
 
   return (
-    /* Outer hover zone - same position as widget but extends 44px above for toolbar.
-       pointerEvents:none so it doesn't block canvas interactions, children opt-in. */
+    /* Outer hover zone - extends 44px above widget for toolbar access */
     <div
       style={{
         position: 'absolute',
@@ -823,7 +822,6 @@ export default function WidgetRenderer({
         width: widget.width,
         height: widget.height + TOOLBAR_ZONE,
         zIndex: widget.z_index,
-        pointerEvents: 'none',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -833,7 +831,6 @@ export default function WidgetRenderer({
         {isHovered && !isSelected && !isStickyNote && (
           <div
             className="flex items-center gap-1 bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg border border-white/10"
-            style={{ pointerEvents: 'auto' }}
             onClick={e => e.stopPropagation()}
             onMouseDown={e => e.stopPropagation()}
           >
@@ -884,7 +881,6 @@ export default function WidgetRenderer({
           opacity: (widget.settings?.opacity || 100) / 100,
           boxShadow: widgetStyle.boxShadow,
           position: 'relative',
-          pointerEvents: 'auto',
           overflow: 'hidden',
         }}
         className={
@@ -1043,23 +1039,23 @@ export default function WidgetRenderer({
       {isHovered && !isSelected && widget.shape !== 'circle' && (
         <>
           <div
-            className="absolute w-2 h-2 bg-violet-500 rounded-full cursor-nw-resize shadow-sm"
-            style={{ top: '-4px', left: '-4px' }}
+            className="absolute w-3 h-3 bg-violet-500 border-2 border-white rounded-sm cursor-nw-resize shadow-md"
+            style={{ top: '-6px', left: '-6px' }}
             onMouseDown={e => handleResizeMouseDown(e, 'nw')}
           />
           <div
-            className="absolute w-2 h-2 bg-violet-500 rounded-full cursor-ne-resize shadow-sm"
-            style={{ top: '-4px', right: '-4px' }}
+            className="absolute w-3 h-3 bg-violet-500 border-2 border-white rounded-sm cursor-ne-resize shadow-md"
+            style={{ top: '-6px', right: '-6px' }}
             onMouseDown={e => handleResizeMouseDown(e, 'ne')}
           />
           <div
-            className="absolute w-2 h-2 bg-violet-500 rounded-full cursor-sw-resize shadow-sm"
-            style={{ bottom: '-4px', left: '-4px' }}
+            className="absolute w-3 h-3 bg-violet-500 border-2 border-white rounded-sm cursor-sw-resize shadow-md"
+            style={{ bottom: '-6px', left: '-6px' }}
             onMouseDown={e => handleResizeMouseDown(e, 'sw')}
           />
           <div
-            className="absolute w-2 h-2 bg-violet-500 rounded-full cursor-se-resize shadow-sm"
-            style={{ bottom: '-4px', right: '-4px' }}
+            className="absolute w-3 h-3 bg-violet-500 border-2 border-white rounded-sm cursor-se-resize shadow-md"
+            style={{ bottom: '-6px', right: '-6px' }}
             onMouseDown={e => handleResizeMouseDown(e, 'se')}
           />
         </>
