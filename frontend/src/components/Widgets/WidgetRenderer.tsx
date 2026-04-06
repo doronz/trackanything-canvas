@@ -809,88 +809,53 @@ export default function WidgetRenderer({
       isGenerating ||
       !!widget.settings?._showInitPrompt);
 
-  // Toolbar height for hover zone
-  const TOOLBAR_ZONE = 44;
-
   return (
-    /* Outer hover zone - extends 44px above widget for toolbar access */
     <div
-      style={{
-        position: 'absolute',
-        left: widget.x,
-        top: widget.y - TOOLBAR_ZONE,
-        width: widget.width,
-        height: widget.height + TOOLBAR_ZONE,
-        zIndex: widget.z_index,
-      }}
+      ref={widgetRef}
+      style={{...widgetStyle, overflow: 'visible'}}
+      className={
+        isStickyNote
+          ? 'widget-container sticky-note-widget'
+          : `widget-container ${shapeClass} ${isSelected ? 'selected' : ''} ${hasInitPromptHeaderVisible ? 'has-init-prompt-header' : ''}`
+      }
+      data-widget-id={widget.id}
+      onMouseDown={handleMouseDown}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Toolbar zone - always 44px tall, toolbar only visible on hover */}
-      <div style={{ height: TOOLBAR_ZONE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {isHovered && !isSelected && !isStickyNote && (
-          <div
-            className="flex items-center gap-1 bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg border border-white/10"
-            onClick={e => e.stopPropagation()}
-            onMouseDown={e => e.stopPropagation()}
+      {/* Floating toolbar - absolutely positioned above widget, overflow:visible lets it extend outside */}
+      {isHovered && !isSelected && !isStickyNote && (
+        <div
+          className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg px-2 py-1.5 shadow-lg border border-white/10 z-50"
+          style={{ bottom: '100%', marginBottom: '6px' }}
+          onClick={e => e.stopPropagation()}
+          onMouseDown={e => e.stopPropagation()}
+        >
+          <button
+            onClick={() => {
+              dispatch(selectWidget(widget.id));
+              dispatch(openWidgetSettingsPanel(widget.id));
+            }}
+            className="p-1.5 text-gray-300 hover:text-white hover:bg-white/10 rounded transition-colors"
+            title="Configure"
           >
-            <button
-              onClick={() => {
-                dispatch(selectWidget(widget.id));
-                dispatch(openWidgetSettingsPanel(widget.id));
-              }}
-              className="p-1.5 text-gray-300 hover:text-white hover:bg-white/10 rounded transition-colors"
-              title="Configure"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-            </button>
-            <div className="w-px h-4 bg-white/20" />
-            <button
-              onClick={handleDelete}
-              className="p-1.5 text-gray-300 hover:text-red-400 hover:bg-white/10 rounded transition-colors"
-              title="Delete"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-              </svg>
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Actual widget - positioned right after toolbar zone */}
-      <div
-        ref={widgetRef}
-        style={{
-          width: widget.width,
-          height: widget.height,
-          transform: isDragging ? 'scale(1.02)' : 'scale(1)',
-          transition: isDragging ? 'none' : 'transform 0.2s ease',
-          borderColor: widget.color || '#e5e7eb',
-          borderWidth: `${widget.settings?.borderWidth || 1}px`,
-          borderStyle: 'solid',
-          borderRadius:
-            widget.shape === 'circle'
-              ? '50%'
-              : widget.shape === 'rounded'
-                ? `${widget.settings?.borderRadius || 8}px`
-                : '0px',
-          opacity: (widget.settings?.opacity || 100) / 100,
-          boxShadow: widgetStyle.boxShadow,
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-        className={
-          isStickyNote
-            ? 'widget-container sticky-note-widget'
-            : `widget-container ${shapeClass} ${isSelected ? 'selected' : ''} ${hasInitPromptHeaderVisible ? 'has-init-prompt-header' : ''}`
-        }
-        data-widget-id={widget.id}
-        onMouseDown={handleMouseDown}
-      >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </button>
+          <div className="w-px h-4 bg-white/20" />
+          <button
+            onClick={handleDelete}
+            className="p-1.5 text-gray-300 hover:text-red-400 hover:bg-white/10 rounded transition-colors"
+            title="Delete"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
+          </button>
+        </div>
+      )}
       {/* Init Prompt Header - DISABLED for cleaner UX */}
       {false && (
           <div
@@ -1060,7 +1025,6 @@ export default function WidgetRenderer({
           />
         </>
       )}
-      </div>
     </div>
   );
 }
