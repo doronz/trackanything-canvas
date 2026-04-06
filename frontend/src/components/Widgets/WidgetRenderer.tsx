@@ -809,29 +809,31 @@ export default function WidgetRenderer({
       isGenerating ||
       !!widget.settings?._showInitPrompt);
 
+  // Toolbar height for hover zone
+  const TOOLBAR_ZONE = 44;
+
   return (
-    /* Outer hover zone - extends above widget to keep toolbar accessible */
+    /* Outer hover zone - same position as widget but extends 44px above for toolbar.
+       pointerEvents:none so it doesn't block canvas interactions, children opt-in. */
     <div
       style={{
         position: 'absolute',
         left: widget.x,
-        top: widget.y - 48,
+        top: widget.y - TOOLBAR_ZONE,
         width: widget.width,
-        height: widget.height + 48,
+        height: widget.height + TOOLBAR_ZONE,
         zIndex: widget.z_index,
         pointerEvents: 'none',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Floating toolbar - rendered in the 48px zone above the widget */}
-      {isHovered && !isSelected && !isStickyNote && (
-        <div
-          className="flex items-center justify-center"
-          style={{ height: '48px', pointerEvents: 'auto' }}
-        >
+      {/* Toolbar zone - always 44px tall, toolbar only visible on hover */}
+      <div style={{ height: TOOLBAR_ZONE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {isHovered && !isSelected && !isStickyNote && (
           <div
             className="flex items-center gap-1 bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg border border-white/10"
+            style={{ pointerEvents: 'auto' }}
             onClick={e => e.stopPropagation()}
             onMouseDown={e => e.stopPropagation()}
           >
@@ -859,21 +861,31 @@ export default function WidgetRenderer({
               </svg>
             </button>
           </div>
-        </div>
-      )}
-      {/* Spacer when toolbar not shown */}
-      {!(isHovered && !isSelected && !isStickyNote) && <div style={{ height: '48px' }} />}
+        )}
+      </div>
 
-      {/* Actual widget */}
+      {/* Actual widget - positioned right after toolbar zone */}
       <div
         ref={widgetRef}
         style={{
-          ...widgetStyle,
-          position: 'relative' as const,
-          left: 0,
-          top: 0,
-          zIndex: undefined,
+          width: widget.width,
+          height: widget.height,
+          transform: isDragging ? 'scale(1.02)' : 'scale(1)',
+          transition: isDragging ? 'none' : 'transform 0.2s ease',
+          borderColor: widget.color || '#e5e7eb',
+          borderWidth: `${widget.settings?.borderWidth || 1}px`,
+          borderStyle: 'solid',
+          borderRadius:
+            widget.shape === 'circle'
+              ? '50%'
+              : widget.shape === 'rounded'
+                ? `${widget.settings?.borderRadius || 8}px`
+                : '0px',
+          opacity: (widget.settings?.opacity || 100) / 100,
+          boxShadow: widgetStyle.boxShadow,
+          position: 'relative',
           pointerEvents: 'auto',
+          overflow: 'hidden',
         }}
         className={
           isStickyNote
