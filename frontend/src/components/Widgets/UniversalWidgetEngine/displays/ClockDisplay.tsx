@@ -251,11 +251,9 @@ export default function ClockDisplay({
   if (isConfiguring) {
     return (
       <div
-        className="w-full h-full bg-white dark:bg-gray-800 rounded-lg p-4 flex flex-col"
+        className="w-full h-full bg-white dark:bg-gray-800 rounded-lg p-4 flex flex-col text-gray-900 dark:text-gray-100"
         onWheel={handleWheel}
         style={{
-          backgroundColor: styleProps?.backgroundColor || '#ffffff',
-          color: styleProps?.textColor || '#374151',
           fontFamily: 'Poppins, sans-serif',
           fontSize: `${styleProps?.fontSize || 14}px`,
         }}
@@ -372,11 +370,9 @@ export default function ClockDisplay({
   // Main timezone display
   return (
     <div
-      className="w-full h-full bg-white dark:bg-gray-800 rounded-lg p-4"
+      className="w-full h-full bg-white dark:bg-gray-800 rounded-lg p-4 text-gray-900 dark:text-gray-100"
       onWheel={handleWheel}
       style={{
-        backgroundColor: styleProps?.backgroundColor || '#ffffff',
-        color: styleProps?.textColor || '#374151',
         fontFamily: 'Poppins, sans-serif',
         fontSize: `${styleProps?.fontSize || 14}px`,
       }}

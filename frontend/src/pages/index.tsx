@@ -2,7 +2,7 @@ import Canvas from '@/components/Canvas/Canvas';
 import ZoomControls from '@/components/Canvas/ZoomControls';
 import MainLayout from '@/components/Layout/MainLayout';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import StatusBar from '@/components/StatusBar/StatusBar';
+// StatusBar removed for cleaner canvas UX
 import Toolbar from '@/components/Toolbar/Toolbar';
 import { AppDispatch, RootState } from '@/store';
 import { fetchAIConfigs } from '@/store/aiConfigSlice';
@@ -102,7 +102,7 @@ export default function Home() {
             <Canvas />
           </div>
           <ZoomControls />
-          <StatusBar />
+          {/* StatusBar removed */}
         </div>
       </MainLayout>
     </>

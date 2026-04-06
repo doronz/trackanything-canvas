@@ -821,8 +821,28 @@ export default function WidgetRenderer({
       data-widget-id={widget.id}
       onMouseDown={handleMouseDown}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={(e) => {
+        // Don't un-hover if moving to the floating toolbar above
+        const rect = widgetRef.current?.getBoundingClientRect();
+        if (rect) {
+          const mouseY = e.clientY;
+          const mouseX = e.clientX;
+          // Keep hovered if cursor is in the zone above the widget (toolbar area)
+          if (mouseY >= rect.top - 55 && mouseY < rect.top && mouseX >= rect.left && mouseX <= rect.right) {
+            return;
+          }
+        }
+        setIsHovered(false);
+      }}
     >
+      {/* Invisible hover extension zone above widget for toolbar access */}
+      {isHovered && !isSelected && (
+        <div
+          className="absolute left-0 right-0 z-10"
+          style={{ top: '-55px', height: '55px' }}
+          onMouseLeave={() => setIsHovered(false)}
+        />
+      )}
       {/* Init Prompt Header - DISABLED for cleaner UX */}
       {false && (
           <div
@@ -904,8 +924,8 @@ export default function WidgetRenderer({
           </div>
         )}
 
-      {/* Widget Header - only for non-sticky notes */}
-      {!isStickyNote && (
+      {/* Widget Header - hidden for sticky notes or when hideTitle setting is on */}
+      {!isStickyNote && !widget.settings?.hideTitle && (
         <div
           className={`widget-header ${shapeClass === 'rounded-full' ? 'rounded-t-full' : 'rounded-t-lg'}`}
           style={titleHeaderStyle}

@@ -28,12 +28,14 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
   const [shape, setShape] = useState<'rectangle' | 'rounded' | 'circle'>('rounded');
   const [fontSize, setFontSize] = useState(14);
   const [shadow, setShadow] = useState('none');
+  const [hideTitle, setHideTitle] = useState(false);
 
   // Initialize settings from widget
   useEffect(() => {
     if (widget?.settings) {
       currentWidgetIdRef.current = widget.id;
       setTitle(widget.title || '');
+      setHideTitle(!!widget.settings.hideTitle);
       setTitleBackgroundColor(
         widget.settings.titleBackgroundColor || widget.settings.backgroundColor || '#ffffff'
       );
@@ -61,6 +63,7 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
       opacity,
       fontSize,
       shadow,
+      hideTitle,
     };
 
     // Apply changes for real-time preview without saving to backend
@@ -91,6 +94,7 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
     shape,
     fontSize,
     shadow,
+    hideTitle,
     dispatch,
   ]);
 
@@ -109,6 +113,7 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
       opacity,
       fontSize,
       shadow,
+      hideTitle,
     };
 
     // Save changes to backend
@@ -192,6 +197,15 @@ export default function WidgetSettingsPanel({ isOpen, widgetId }: WidgetSettings
             placeholder="Enter widget title..."
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <label className="flex items-center space-x-2 mt-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={hideTitle}
+              onChange={e => setHideTitle(e.target.checked)}
+              className="rounded border-gray-300 dark:border-gray-600 text-violet-600 focus:ring-violet-500"
+            />
+            <span className="text-sm text-gray-600 dark:text-gray-400">Hide title bar</span>
+          </label>
         </div>
 
         {/* Appearance Settings */}
