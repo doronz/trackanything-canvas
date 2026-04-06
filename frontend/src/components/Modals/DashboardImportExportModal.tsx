@@ -279,7 +279,7 @@ export default function DashboardImportExportModal({ isOpen }: DashboardImportEx
             <button
               onClick={handleExport}
               disabled={!currentDashboard}
-              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] hover:shadow-lg text-white rounded-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 hover:shadow-lg text-white rounded-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
               Export as {exportType === 'template' ? 'Template' : 'Instance'}

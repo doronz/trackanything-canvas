@@ -264,7 +264,7 @@ export default function ClockDisplay({
           <h3 className="text-sm font-medium">Clock Configuration</h3>
           <button
             onClick={() => setIsConfiguring(false)}
-            className="px-3 py-1 text-xs bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded hover:shadow-lg"
+            className="px-3 py-1 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded hover:shadow-lg"
           >
             Done
           </button>
@@ -319,7 +319,7 @@ export default function ClockDisplay({
               />
               <button
                 onClick={addTimezone}
-                className="px-3 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg"
+                className="px-3 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg"
               >
                 <PlusIcon className="w-4 h-4" />
               </button>
@@ -435,7 +435,7 @@ export default function ClockDisplay({
           <p className="text-sm text-gray-600 dark:text-gray-400">No timezones configured</p>
           <button
             onClick={() => setIsConfiguring(true)}
-            className="mt-2 px-3 py-1 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded text-xs hover:shadow-lg transition-shadow"
+            className="mt-2 px-3 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs hover:shadow-lg transition-shadow"
           >
             Add Timezones
           </button>

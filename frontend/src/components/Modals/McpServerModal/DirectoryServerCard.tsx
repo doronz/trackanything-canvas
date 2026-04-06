@@ -115,7 +115,7 @@ export default function DirectoryServerCard({ server, onSelect }: DirectoryServe
           </a>
           <button
             onClick={() => onSelect(server)}
-            className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-[#FF5A78] to-[#FFC850] border-transparent rounded-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+            className="px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 border-transparent rounded-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
           >
             Select
           </button>

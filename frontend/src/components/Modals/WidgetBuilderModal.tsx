@@ -340,7 +340,7 @@ export default function WidgetBuilderModal({ isOpen }: WidgetBuilderModalProps) 
         <h3 className="text-lg font-medium">Define Fields</h3>
         <button
           onClick={addField}
-          className="flex items-center px-3 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg"
+          className="flex items-center px-3 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg"
         >
           <PlusIcon className="w-4 h-4 mr-1" />
           Add Field
@@ -516,7 +516,7 @@ export default function WidgetBuilderModal({ isOpen }: WidgetBuilderModalProps) 
             <button
               onClick={saveField}
               disabled={!editingField.name.trim()}
-              className="px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg disabled:opacity-50"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg disabled:opacity-50"
             >
               {fields.find(f => f.id === editingField.id) ? 'Update' : 'Add'} Field
             </button>
@@ -726,7 +726,7 @@ export default function WidgetBuilderModal({ isOpen }: WidgetBuilderModalProps) 
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                   index <= currentStepIndex
-                    ? 'bg-gradient-to-r from-[#FF5A78] from-33% to-[#FFC850] to-100% text-white'
+                    ? 'bg-violet-600 text-white'
                     : 'bg-gray-200 text-gray-600'
                 }`}
               >
@@ -736,7 +736,7 @@ export default function WidgetBuilderModal({ isOpen }: WidgetBuilderModalProps) 
                 <div
                   className={`w-16 h-1 ml-2 ${
                     index < currentStepIndex
-                      ? 'bg-gradient-to-r from-[#FF5A78] from-33% to-[#FFC850] to-100%'
+                      ? 'bg-violet-600'
                       : 'bg-gray-200'
                   }`}
                 />
@@ -779,7 +779,7 @@ export default function WidgetBuilderModal({ isOpen }: WidgetBuilderModalProps) 
                 setCurrentStep(steps[nextIndex]);
               }}
               disabled={!canGoNext()}
-              className="px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg disabled:opacity-50"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg disabled:opacity-50"
             >
               Next
             </button>

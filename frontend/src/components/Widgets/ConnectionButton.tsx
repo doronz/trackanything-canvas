@@ -35,7 +35,7 @@ export default function ConnectionButton({
       onClick={handleClick}
       className={`
         ${positionClasses[position]}
-        w-6 h-6 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] hover:shadow-lg text-white rounded-full
+        w-6 h-6 bg-violet-600 hover:bg-violet-700 hover:shadow-lg text-white rounded-full
         shadow-lg hover:shadow-xl transition-all duration-200
         flex items-center justify-center z-10
         ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75 pointer-events-none'}
@@ -77,7 +77,7 @@ export function MessageConnectionButton({
     <button
       onClick={handleClick}
       className={`
-        absolute top-2 right-2 w-6 h-6 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] hover:shadow-lg text-white rounded-full
+        absolute top-2 right-2 w-6 h-6 bg-violet-600 hover:bg-violet-700 hover:shadow-lg text-white rounded-full
         shadow-md hover:shadow-lg transition-all duration-200
         flex items-center justify-center z-10
         ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75 pointer-events-none'}

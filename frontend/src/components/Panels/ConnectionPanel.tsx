@@ -673,7 +673,7 @@ export default function ConnectionPanel() {
                 isConverting ||
                 (!createEmptyWidget && !aiConfigStatus.loading && !aiConfigStatus.available)
               }
-              className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-[#FF5A78] to-[#FFC850] border border-transparent rounded-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 border border-transparent rounded-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {isConverting ? (
                 <div className="flex items-center justify-center space-x-2">
@@ -807,7 +807,7 @@ export default function ConnectionPanel() {
                     setSelectedBlueprint(previewBlueprint);
                     setPreviewBlueprint(null);
                   }}
-                  className="flex-1 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg transition-shadow"
+                  className="flex-1 flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg transition-shadow"
                 >
                   Select Widget
                 </button>

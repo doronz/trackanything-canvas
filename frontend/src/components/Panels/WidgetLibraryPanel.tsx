@@ -439,7 +439,7 @@ export default function WidgetLibraryPanel() {
           </button>
           <button
             onClick={() => installWidget(blueprint)}
-            className="flex-1 flex items-center justify-center px-2 py-1 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded text-xs hover:shadow-lg transition-shadow"
+            className="flex-1 flex items-center justify-center px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs hover:shadow-lg transition-shadow"
           >
             <PlusIcon className="w-3 h-3 mr-1" />
             Install
@@ -495,7 +495,7 @@ export default function WidgetLibraryPanel() {
                   sortOrder: 'desc',
                 })
               }
-              className="px-3 py-1 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded text-xs hover:shadow-lg"
+              className="px-3 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs hover:shadow-lg"
             >
               Clear Filters
             </button>
@@ -695,7 +695,7 @@ export default function WidgetLibraryPanel() {
                     installWidget(previewWidget);
                     setPreviewWidget(null);
                   }}
-                  className="flex-1 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg transition-shadow"
+                  className="flex-1 flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md hover:shadow-lg transition-shadow"
                 >
                   <PlusIcon className="w-4 h-4 mr-2" />
                   Install Widget

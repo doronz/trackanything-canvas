@@ -177,7 +177,7 @@ export default function CardsDisplay({
           <button
             onClick={() => setIsEditing(false)}
             disabled={!front.trim() || !back.trim()}
-            className="px-3 py-1 text-xs bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded hover:shadow-lg disabled:opacity-50"
+            className="px-3 py-1 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded hover:shadow-lg disabled:opacity-50"
           >
             Save
           </button>

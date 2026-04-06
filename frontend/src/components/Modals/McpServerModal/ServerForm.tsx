@@ -192,7 +192,7 @@ export default function ServerForm({
             <button
               type="submit"
               disabled={loading || !formData.name.trim()}
-              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-[#FF5A78] to-[#FFC850] border border-transparent rounded-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 border border-transparent rounded-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading
                 ? editingServer

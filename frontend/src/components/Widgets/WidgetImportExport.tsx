@@ -323,7 +323,7 @@ export default function WidgetImportExport({
 
             <button
               onClick={() => handleExport(exportType)}
-              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] hover:shadow-lg text-white rounded-lg transition-shadow"
+              className="w-full flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 hover:shadow-lg text-white rounded-lg transition-shadow"
             >
               <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
               Export as {exportType === 'template' ? 'Template' : 'Instance'}
