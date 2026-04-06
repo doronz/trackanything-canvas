@@ -827,7 +827,7 @@ export default function WidgetRenderer({
       {isHovered && !isSelected && !isStickyNote && (
         <div
           className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg px-2 py-1.5 shadow-lg border border-white/10 z-50"
-          style={{ bottom: '100%', marginBottom: '6px' }}
+          style={{ bottom: '100%', paddingBottom: '8px' }}
           onClick={e => e.stopPropagation()}
           onMouseDown={e => e.stopPropagation()}
         >
