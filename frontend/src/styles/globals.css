@@ -70,23 +70,14 @@ body {
 
 .widget-container:not(.sticky-note-widget) .widget-content {
   @apply bg-white dark:bg-gray-800 overflow-auto rounded-b-lg;
-  height: calc(100% - 36px); /* Account for header only (no footer) */
+  height: calc(100% - 36px); /* Account for header */
   cursor: default;
 }
 
-/* Adjust content height when init prompt header is visible */
-.widget-container:not(.sticky-note-widget).has-init-prompt-header .widget-content {
-  height: calc(100% - 86px); /* header + init prompt header */
-}
-
-.widget-container:not(.sticky-note-widget) .widget-content:only-child {
-  height: 100%; /* No header, no footer -- full height */
+/* No title bar - content fills full height */
+.widget-container:not(.sticky-note-widget).no-title .widget-content {
+  height: 100%;
   border-radius: calc(0.5rem - 2px);
-}
-
-/* Adjust content height when init prompt header is visible (no title header) */
-.widget-container:not(.sticky-note-widget).has-init-prompt-header .widget-content:only-child {
-  height: calc(100% - 50px); /* init prompt header only */
 }
 
 /* Sticky note specific styles - removed to prevent conflicts */
