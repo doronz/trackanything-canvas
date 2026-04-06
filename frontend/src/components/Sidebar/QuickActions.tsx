@@ -83,11 +83,8 @@ export default function QuickActions() {
       </div>
 
       {/* Theme Toggle */}
-      <div className="pt-2 border-t border-gray-200 dark:border-gray-700 text-sm">
-        © 2025{' '}
-        <a href="https://visona.me" target="_blank" className="hover:underline">
-          VISONA
-        </a>
+      <div className="pt-2 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-400 dark:text-gray-600">
+        TrackAnything &middot; Private Dashboard
       </div>
     </div>
   );

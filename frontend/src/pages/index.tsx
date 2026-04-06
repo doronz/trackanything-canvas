@@ -51,17 +51,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Canvas MCP Client</title>
+        <title>TrackAnything</title>
         <meta
           name="description"
-          content="Customizable dashboard with infinite canvas and MCP integration!"
+          content="Personal life management dashboard with infinite canvas"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="VISONA - visona.me" />
-        <meta
-          name="keywords"
-          content="dashboard, infinite canvas, MCP, widget system, AI, LLM, dashboard client"
-        />
       </Head>
 
       <MainLayout>

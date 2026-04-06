@@ -37,12 +37,12 @@ export default function Sidebar() {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">C</span>
+            <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xl">T</span>
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Canvas MCP</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Dashboard Client</p>
+              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">TrackAnything</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Personal Command Center</p>
             </div>
           </div>
           {/* TODO: Add settings button */}
