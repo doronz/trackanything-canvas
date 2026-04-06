@@ -822,13 +822,8 @@ export default function WidgetRenderer({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Init Prompt Header - show only when no prompt AND no content exist, OR when toggle is active, OR when _showInitPrompt flag is set */}
-      {/* Hide for Flashcard widgets */}
-      {!isFlashcard &&
-        ((!widget.init_prompt && !hasWidgetContent()) ||
-          showInitPromptInput ||
-          isGenerating ||
-          widget.settings?._showInitPrompt) && (
+      {/* Init Prompt Header - DISABLED for cleaner UX */}
+      {false && (
           <div
             className={`widget-init-prompt-header ${shapeClass === 'rounded-full' ? 'rounded-t-full' : isStickyNote ? '' : 'rounded-t-lg'} border-b transition-opacity duration-300 ${isGenerating ? 'animate-pulse' : ''}`}
             style={{

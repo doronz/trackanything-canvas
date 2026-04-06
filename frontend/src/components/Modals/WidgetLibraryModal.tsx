@@ -394,7 +394,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
   };
 
   const renderFilters = () => (
-    <div className="bg-gray-50 p-4 border-b">
+    <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
       {/* Search Bar */}
       <div className="mb-4">
         <div className="relative">
@@ -404,7 +404,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
             placeholder="Search widgets..."
             value={filters.search}
             onChange={e => setFilters({ ...filters, search: e.target.value })}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
@@ -412,11 +412,11 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
       {/* Filter Controls */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
           <select
             value={filters.category}
             onChange={e => setFilters({ ...filters, category: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {CATEGORIES.map(category => (
               <option key={category} value={category}>
@@ -427,14 +427,14 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sort By</label>
           <select
             value={`${filters.sortBy}:${filters.sortOrder}`}
             onChange={e => {
               const [sortBy, sortOrder] = e.target.value.split(':');
               setFilters({ ...filters, sortBy: sortBy as any, sortOrder: sortOrder as any });
             }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {SORT_OPTIONS.map(option => (
               <option key={option.value} value={option.value}>
@@ -445,7 +445,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">View</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">View</label>
           <div className="flex border border-gray-300 rounded-md">
             <button
               onClick={() => setViewMode('grid')}
@@ -484,7 +484,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
         >
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-1">
-              <h3 className="font-medium text-gray-900">{blueprint.name}</h3>
+              <h3 className="font-medium text-gray-900 dark:text-white">{blueprint.name}</h3>
               <span className="text-lg">{getEngineIcon(blueprint.widget_engine || '')}</span>
               <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
                 {getCategoryIcon(blueprint.widget_metadata?.category || 'General')}{' '}
@@ -522,7 +522,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
             </button>
             <button
               onClick={() => installWidget(blueprint)}
-              className="flex items-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg transition-shadow"
+              className="flex items-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md transition-colors"
             >
               <PlusIcon className="w-4 h-4 mr-1" />
               Install
@@ -535,13 +535,13 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
     return (
       <div
         key={blueprint.id}
-        className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors"
+        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-600 bg-white dark:bg-gray-800 transition-colors"
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-2">
             <span className="text-2xl">{getEngineIcon(blueprint.widget_engine || '')}</span>
             <div>
-              <h3 className="font-medium text-gray-900">{blueprint.name}</h3>
+              <h3 className="font-medium text-gray-900 dark:text-white">{blueprint.name}</h3>
               <div className="flex items-center space-x-1 text-xs text-gray-500">
                 <span>{getCategoryIcon(blueprint.widget_metadata?.category || 'General')}</span>
                 <span>{blueprint.widget_metadata?.category}</span>
@@ -560,7 +560,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
           </button>
         </div>
 
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{blueprint.description}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{blueprint.description}</p>
 
         <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
           <span>🏗️ {blueprint?.view_schema?.displayComponent || 'Universal Widget'}</span>
@@ -593,7 +593,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
           </button>
           <button
             onClick={() => installWidget(blueprint)}
-            className="flex-1 flex items-center justify-center px-3 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg transition-shadow"
+            className="flex-1 flex items-center justify-center px-3 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md transition-colors"
           >
             <PlusIcon className="w-4 h-4 mr-1" />
             Install
@@ -673,21 +673,21 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
     <BaseModal isOpen={isOpen} onClose={handleClose} title="Widget Library" size="3xl">
       <div className="flex flex-col h-[800px]">
         {/* Header Stats */}
-        <div className="flex items-center justify-between p-4 bg-blue-50 border-b">
+        <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">{blueprints.length}</div>
-              <div className="text-xs text-gray-600">Available Widgets</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Available Widgets</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">{favorites.size}</div>
-              <div className="text-xs text-gray-600">Favorites</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Favorites</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
                 {blueprints.reduce((sum, b) => sum + (b.install_count || 0), 0)}
               </div>
-              <div className="text-xs text-gray-600">Total Installs</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Total Installs</div>
             </div>
           </div>
 
@@ -811,7 +811,7 @@ export default function WidgetLibraryModal({ isOpen }: WidgetLibraryModalProps) 
                     installWidget(previewWidget);
                     setPreviewWidget(null);
                   }}
-                  className="flex-1 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF5A78] to-[#FFC850] text-white rounded-md hover:shadow-lg transition-shadow"
+                  className="flex-1 flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md transition-colors"
                 >
                   <PlusIcon className="w-4 h-4 mr-2" />
                   Install Widget

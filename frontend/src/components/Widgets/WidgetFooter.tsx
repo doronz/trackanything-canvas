@@ -1,12 +1,10 @@
 import Tooltip from '@/components/UI/Tooltip';
 import { AppDispatch } from '@/store';
-import { openWidgetImportExportModal, openWidgetSettingsPanel } from '@/store/uiSlice';
+import { openWidgetSettingsPanel } from '@/store/uiSlice';
 import { selectWidget } from '@/store/widgetSlice';
 import { Widget } from '@/types';
 import {
-  ArrowDownTrayIcon,
-  PaintBrushIcon,
-  SparklesIcon,
+  Cog6ToothIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import React from 'react';
@@ -22,8 +20,6 @@ interface WidgetFooterProps {
 export default function WidgetFooter({
   widget,
   onDelete,
-  onToggleInitPrompt,
-  hasInitPrompt,
 }: WidgetFooterProps) {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,21 +45,10 @@ export default function WidgetFooter({
     }
   };
 
-  const handleCustomizeAppearance = (e: React.MouseEvent) => {
+  const handleConfigure = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(selectWidget(widget.id));
     dispatch(openWidgetSettingsPanel(widget.id));
-  };
-
-  const handleExport = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch(
-      openWidgetImportExportModal({
-        widgetId: widget.id,
-        referencePosition: { x: widget.x, y: widget.y },
-        exportOnly: true,
-      })
-    );
   };
 
   return (
@@ -77,38 +62,14 @@ export default function WidgetFooter({
 
       {/* Right side - Action buttons */}
       <div className="flex items-center space-x-1">
-        {/* AI Prompt Toggle Button - Only show if widget has an init_prompt */}
-        {hasInitPrompt && onToggleInitPrompt && (
-          <Tooltip content="Show/Hide AI Prompt" position="top">
-            <button
-              onClick={onToggleInitPrompt}
-              onMouseDown={e => e.stopPropagation()}
-              className="p-1.5 text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-            >
-              <SparklesIcon className="w-3.5 h-3.5" />
-            </button>
-          </Tooltip>
-        )}
-
-        {/* Customize Appearance Button */}
-        <Tooltip content="Customize Appearance" position="top">
+        {/* Configure Widget Button */}
+        <Tooltip content="Configure Widget" position="top">
           <button
-            onClick={handleCustomizeAppearance}
+            onClick={handleConfigure}
             onMouseDown={e => e.stopPropagation()}
             className="p-1.5 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
           >
-            <PaintBrushIcon className="w-3.5 h-3.5" />
-          </button>
-        </Tooltip>
-
-        {/* Export Button */}
-        <Tooltip content="Export Widget" position="top">
-          <button
-            onClick={handleExport}
-            onMouseDown={e => e.stopPropagation()}
-            className="p-1.5 text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-          >
-            <ArrowDownTrayIcon className="w-3.5 h-3.5" />
+            <Cog6ToothIcon className="w-3.5 h-3.5" />
           </button>
         </Tooltip>
 
