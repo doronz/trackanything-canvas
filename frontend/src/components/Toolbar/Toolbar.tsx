@@ -104,13 +104,13 @@ export default function Toolbar() {
   // FAB button when collapsed
   if (!expanded) {
     return (
-      <div className="fixed bottom-20 right-6 z-50">
-        <Tooltip content="Add Widget" position="left">
+      <div className="fixed top-4 right-4 z-50">
+        <Tooltip content="Add Widget" position="bottom">
           <button
             onClick={() => setExpanded(true)}
-            className="w-14 h-14 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center"
+            className="w-11 h-11 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center"
           >
-            <PlusIcon className="w-7 h-7" />
+            <PlusIcon className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </Tooltip>
       </div>
@@ -121,7 +121,7 @@ export default function Toolbar() {
   return (
     <div
       ref={toolbarRef}
-      className="fixed bottom-20 right-6 z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 w-72"
+      className="fixed top-16 right-4 z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 w-72"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">

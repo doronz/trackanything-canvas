@@ -282,10 +282,13 @@ export default function Canvas() {
       const isPinchZoom = e.ctrlKey;
 
       if (isPinchZoom) {
-        // Handle zoom
-        const zoomSpeed = 0.05;
-        const deltaZoom = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
-        const newZoom = Math.max(0.1, Math.min(5, zoom + deltaZoom));
+        // Handle pinch zoom with smooth, Apple-like sensitivity
+        // deltaY from trackpad pinch is typically small (-2 to 2) but can spike
+        // Use multiplicative scaling clamped for smooth feel
+        const dampening = 0.01; // Low dampening = smooth, not jumpy
+        const zoomFactor = 1 - e.deltaY * dampening;
+        const clampedFactor = Math.max(0.95, Math.min(1.05, zoomFactor)); // Clamp per-event change
+        const newZoom = Math.max(0.1, Math.min(5, zoom * clampedFactor));
 
         dispatch(
           zoomToPoint({
