@@ -93,6 +93,9 @@ const canvasSlice = createSlice({
     },
 
     // Zoom to specific point (mouse position)
+    // Transform is: translate(pan.x, pan.y) scale(zoom) with origin 0,0
+    // So screen pos = world pos * zoom + pan
+    // Therefore world pos = (screen pos - pan) / zoom
     zoomToPoint: (
       state,
       action: PayloadAction<{
@@ -102,20 +105,18 @@ const canvasSlice = createSlice({
       }>
     ) => {
       const { zoom, clientX, clientY } = action.payload;
-
-      // Calculate the world position before zoom
-      const worldX = (clientX - state.viewport.width / 2 - state.pan.x) / state.zoom;
-      const worldY = (clientY - state.viewport.height / 2 - state.pan.y) / state.zoom;
-
-      // Update zoom
       const newZoom = Math.max(0.1, Math.min(5, zoom));
 
-      // Calculate new pan to keep the same world position under the mouse
-      const newPanX = clientX - state.viewport.width / 2 - worldX * newZoom;
-      const newPanY = clientY - state.viewport.height / 2 - worldY * newZoom;
+      // World position under cursor (stays fixed)
+      const worldX = (clientX - state.pan.x) / state.zoom;
+      const worldY = (clientY - state.pan.y) / state.zoom;
 
+      // New pan so the same world point stays under the cursor
+      state.pan = {
+        x: clientX - worldX * newZoom,
+        y: clientY - worldY * newZoom,
+      };
       state.zoom = newZoom;
-      state.pan = { x: newPanX, y: newPanY };
     },
 
     // Center view on a specific widget or world position
