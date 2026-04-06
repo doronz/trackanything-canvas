@@ -1008,15 +1008,7 @@ export default function WidgetRenderer({
         </>
       )}
 
-      {/* Connection Buttons - show on hover or selection */}
-      <ConnectionButton widgetId={widget.id} isVisible={isSelected || isHovered} position="right" />
-      <ConnectionButton widgetId={widget.id} isVisible={isSelected || isHovered} position="left" />
-      <ConnectionButton widgetId={widget.id} isVisible={isSelected || isHovered} position="top" />
-      <ConnectionButton
-        widgetId={widget.id}
-        isVisible={isSelected || isHovered}
-        position="bottom"
-      />
+      {/* Connection Buttons - hidden for cleaner UX */}
 
       {/* Widget Footer - show for all widgets EXCEPT Sticky Note (which has its own footer) */}
       {!isStickyNote && (

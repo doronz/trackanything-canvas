@@ -6,7 +6,8 @@ import { WidgetBlueprint } from '@/types';
 import { useWidgetCreation } from '@/hooks/useWidgetCreation';
 import Tooltip from '@/components/UI/Tooltip';
 import {
-  HandRaisedIcon,
+  PlusIcon,
+  XMarkIcon,
   DocumentIcon,
   ListBulletIcon,
   ChatBubbleLeftRightIcon,
@@ -16,16 +17,20 @@ import {
   ViewColumnsIcon,
   TableCellsIcon,
   DocumentTextIcon,
-  ArrowUpTrayIcon,
-  WrenchScrewdriverIcon,
-  BookOpenIcon,
   GlobeAltIcon,
+  BookOpenIcon,
+  WrenchScrewdriverIcon,
+  ArrowUpTrayIcon,
+  ClockIcon,
+  CloudIcon,
 } from '@heroicons/react/24/outline';
 
 const defaultWidgets = [
   { label: 'AI Chat', icon: ChatBubbleLeftRightIcon, blueprintName: 'AI Chat' },
   { label: 'Sticky Note', icon: DocumentIcon, blueprintName: 'Sticky Note' },
   { label: 'To-Do List', icon: ListBulletIcon, blueprintName: 'To-Do List' },
+  { label: 'World Clock', icon: ClockIcon, blueprintName: 'World Clock' },
+  { label: 'Weather', icon: CloudIcon, blueprintName: 'Weather Widget' },
   { label: 'Image', icon: PhotoIcon, blueprintName: 'Image Widget' },
   { label: 'Webpage', icon: GlobeAltIcon, blueprintName: 'Webpage Preview' },
   { label: 'Flash Cards', icon: AcademicCapIcon, blueprintName: 'Flash Cards' },
@@ -38,20 +43,15 @@ const defaultWidgets = [
 export default function Toolbar() {
   const dispatch = useDispatch<AppDispatch>();
   const { createWidgetFromBlueprint, canCreateWidget } = useWidgetCreation();
-  const { activeTool } = useSelector((state: RootState) => state.ui);
 
   const [blueprints, setBlueprints] = useState<WidgetBlueprint[]>([]);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const hasLoadedRef = useRef(false);
-
-  // Cross-platform modifier key detection for tooltip
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-  const modifierKey = isMac ? 'Cmd' : 'Ctrl';
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   // Load widget blueprints from API - only once
   useEffect(() => {
-    // TODO: Cache query results or use reactQuery
-    // Prevent double loading in React StrictMode
     if (hasLoadedRef.current) return;
     hasLoadedRef.current = true;
 
@@ -62,7 +62,6 @@ export default function Toolbar() {
         const response = await fetch(`${apiUrl}/api/widget-blueprints/?public_only=true`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Loaded widget blueprints:', data);
           setBlueprints(data);
         }
       } catch (error) {
@@ -75,97 +74,117 @@ export default function Toolbar() {
     loadBlueprints();
   }, []);
 
+  // Close when clicking outside
+  useEffect(() => {
+    if (!expanded) return;
+    const handleClick = (e: MouseEvent) => {
+      if (toolbarRef.current && !toolbarRef.current.contains(e.target as Node)) {
+        setExpanded(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [expanded]);
+
   const handleAddWidget = async (blueprintName: string) => {
     if (!canCreateWidget || loading) return;
 
-    // Find the blueprint by name
     const blueprint = blueprints.find(bp => bp.name === blueprintName);
     if (!blueprint) {
       console.error(`Blueprint not found: ${blueprintName}`);
       return;
     }
 
-    // Use shared widget creation logic
     const success = await createWidgetFromBlueprint({ blueprint });
-    if (!success) {
-      console.error(`Failed to create widget: ${blueprintName}`);
+    if (success) {
+      setExpanded(false);
     }
   };
 
-  const handleHandToolToggle = () => {
-    // Toggle between hand and select tool
-    dispatch(setActiveTool(activeTool === 'hand' ? 'select' : 'hand'));
-  };
-
-  return (
-    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
-      <div className="flex items-center px-4 py-2">
-        {/* Hand Tool */}
-        <Tooltip
-          content={`Hand Tool - Move and zoom canvas anywhere (Space to toggle)\nSelect widget or hold ${modifierKey} to scroll widget content`}
-          position="bottom"
-        >
+  // FAB button when collapsed
+  if (!expanded) {
+    return (
+      <div className="fixed bottom-20 right-6 z-50">
+        <Tooltip content="Add Widget" position="left">
           <button
-            onClick={handleHandToolToggle}
-            className={`p-2 rounded-md transition-colors ${
-              activeTool === 'hand'
-                ? 'bg-gradient-to-r from-[#FF5A78] from-33% to-[#FFC850] to-100% text-white shadow-md'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-            }`}
+            onClick={() => setExpanded(true)}
+            className="w-14 h-14 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center"
           >
-            <HandRaisedIcon className="w-5 h-5" />
+            <PlusIcon className="w-7 h-7" />
           </button>
         </Tooltip>
+      </div>
+    );
+  }
 
-        {/* Separator */}
-        <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-3" />
+  // Expanded widget picker
+  return (
+    <div
+      ref={toolbarRef}
+      className="fixed bottom-20 right-6 z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 w-72"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Add Widget</h3>
+        <button
+          onClick={() => setExpanded(false)}
+          className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <XMarkIcon className="w-4 h-4" />
+        </button>
+      </div>
 
-        {/* Widget Types */}
-        <div className="flex items-center space-x-1">
-          {defaultWidgets.map(widget => (
-            <Tooltip key={widget.blueprintName} content={widget.label} position="bottom">
-              <button
-                onClick={() => handleAddWidget(widget.blueprintName)}
-                disabled={!canCreateWidget || loading}
-                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <widget.icon className="w-5 h-5" />
-              </button>
-            </Tooltip>
-          ))}
-        </div>
-
-        {/* Separator */}
-        <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-3" />
-
-        {/* Quick Actions */}
-        <div className="flex items-center space-x-1">
-          <Tooltip content="Widget Library" position="bottom">
+      {/* Widget Grid */}
+      <div className="grid grid-cols-4 gap-2 mb-3">
+        {defaultWidgets.map(widget => (
+          <Tooltip key={widget.blueprintName} content={widget.label} position="top">
             <button
-              onClick={() => dispatch(setWidgetLibraryOpen(true))}
-              className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-md transition-colors"
+              onClick={() => handleAddWidget(widget.blueprintName)}
+              disabled={!canCreateWidget || loading}
+              className="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50"
             >
-              <BookOpenIcon className="w-5 h-5" />
+              <widget.icon className="w-5 h-5" />
+              <span className="text-[10px] leading-tight truncate w-full text-center">
+                {widget.label}
+              </span>
             </button>
           </Tooltip>
+        ))}
+      </div>
 
-          <Tooltip content="Widget Builder" position="bottom">
-            <button
-              onClick={() => dispatch(openModal('widgetBuilder'))}
-              className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-            >
-              <WrenchScrewdriverIcon className="w-5 h-5" />
-            </button>
-          </Tooltip>
-
-          <Tooltip content="Import Widget" position="bottom">
-            <button
-              onClick={() => dispatch(openModal('widgetImportExport'))}
-              className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-            >
-              <ArrowUpTrayIcon className="w-5 h-5" />
-            </button>
-          </Tooltip>
+      {/* Divider */}
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-2">
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => {
+              dispatch(setWidgetLibraryOpen(true));
+              setExpanded(false);
+            }}
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+          >
+            <BookOpenIcon className="w-3.5 h-3.5" />
+            Library
+          </button>
+          <button
+            onClick={() => {
+              dispatch(openModal('widgetBuilder'));
+              setExpanded(false);
+            }}
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+          >
+            <WrenchScrewdriverIcon className="w-3.5 h-3.5" />
+            Builder
+          </button>
+          <button
+            onClick={() => {
+              dispatch(openModal('widgetImportExport'));
+              setExpanded(false);
+            }}
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+          >
+            <ArrowUpTrayIcon className="w-3.5 h-3.5" />
+            Import
+          </button>
         </div>
       </div>
     </div>

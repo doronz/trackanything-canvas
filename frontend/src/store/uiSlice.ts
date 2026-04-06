@@ -74,7 +74,7 @@ interface UIState {
 }
 
 const initialState: UIState = {
-  sidebarCollapsed: false,
+  sidebarCollapsed: true,
   theme: 'dark',
   showGrid: true,
   snapToGrid: true,

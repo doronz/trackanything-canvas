@@ -1,5 +1,6 @@
 import ModalManager from '@/components/Modals/ModalManager';
 import WidgetSettingsPanel from '@/components/Panels/WidgetSettingsPanel';
+import LoginGate from '@/components/Auth/LoginGate';
 import { RootState, store } from '@/store';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
@@ -20,7 +21,7 @@ function AppContent({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <>
+    <LoginGate>
       <Component {...pageProps} />
       <ModalManager />
       <WidgetSettingsPanel
@@ -38,7 +39,7 @@ function AppContent({ Component, pageProps }: AppProps) {
           },
         }}
       />
-    </>
+    </LoginGate>
   );
 }
 
