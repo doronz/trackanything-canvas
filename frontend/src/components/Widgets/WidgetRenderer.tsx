@@ -816,7 +816,7 @@ export default function WidgetRenderer({
       className={
         isStickyNote
           ? 'widget-container sticky-note-widget'
-          : `widget-container ${shapeClass} ${isSelected ? 'selected' : ''} ${hasInitPromptHeaderVisible ? 'has-init-prompt-header' : ''} ${(isStickyNote || widget.settings?.hideTitle) ? 'no-title' : ''}`
+          : `widget-container ${shapeClass} ${isSelected ? 'selected' : ''} ${hasInitPromptHeaderVisible ? 'has-init-prompt-header' : ''}`
       }
       data-widget-id={widget.id}
       onMouseDown={handleMouseDown}
