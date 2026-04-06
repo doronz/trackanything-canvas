@@ -394,13 +394,13 @@ export default function WidgetLibraryPanel() {
     return (
       <div
         key={blueprint.id}
-        className="border border-gray-200 rounded-lg p-3 hover:border-blue-300 transition-colors"
+        className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-lg p-3 hover:border-violet-400 dark:hover:border-violet-500 transition-colors"
       >
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center space-x-2 flex-1">
             <span className="text-lg">{getEngineIcon(blueprint)}</span>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900 text-sm">{blueprint.name}</h3>
+              <h3 className="font-medium text-gray-900 dark:text-white text-sm">{blueprint.name}</h3>
               <div className="flex items-center space-x-1 text-xs text-gray-500">
                 <span>{getCategoryIcon(blueprint.widget_metadata?.category || 'General')}</span>
                 <span>{blueprint.widget_metadata?.category}</span>
@@ -419,9 +419,9 @@ export default function WidgetLibraryPanel() {
           </button>
         </div>
 
-        <p className="text-xs text-gray-600 mb-2 line-clamp-2">{blueprint.description}</p>
+        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">{blueprint.description}</p>
 
-        <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500 mb-2">
           <span>
             📊 {blueprint.schema?.fields?.length || blueprint.data_schema?.fields?.length || 0}{' '}
             fields
@@ -432,7 +432,7 @@ export default function WidgetLibraryPanel() {
         <div className="flex space-x-2">
           <button
             onClick={() => setPreviewWidget(blueprint)}
-            className="flex-1 flex items-center justify-center px-2 py-1 border border-gray-300 text-gray-700 rounded text-xs hover:bg-gray-50 transition-colors"
+            className="flex-1 flex items-center justify-center px-2 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             <EyeIcon className="w-3 h-3 mr-1" />
             Preview
@@ -454,7 +454,7 @@ export default function WidgetLibraryPanel() {
       return (
         <div className="flex items-center justify-center h-32">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-          <span className="ml-2 text-gray-600 text-sm">Loading...</span>
+          <span className="ml-2 text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
         </div>
       );
     }
@@ -478,8 +478,8 @@ export default function WidgetLibraryPanel() {
       return (
         <div className="flex flex-col items-center justify-center h-32 text-center">
           <SparklesIcon className="w-12 h-12 text-gray-300 mb-2" />
-          <h3 className="text-sm font-medium text-gray-900 mb-1">No Widgets Found</h3>
-          <p className="text-xs text-gray-600 mb-2">
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">No Widgets Found</h3>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
             {filters.search || filters.category !== 'All'
               ? 'Try adjusting your filters.'
               : 'No widgets available.'}
@@ -527,21 +527,21 @@ export default function WidgetLibraryPanel() {
         </div>
 
         {/* Stats Header */}
-        <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900 border-b">
+        <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-4">
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{blueprints.length}</div>
-              <div className="text-xs text-gray-600">Available</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Available</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-green-600">{favorites.size}</div>
-              <div className="text-xs text-gray-600">Favorites</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Favorites</div>
             </div>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <div className="p-3 border-b">
+        <div className="p-3 border-b border-gray-200 dark:border-gray-700">
           <div className="relative mb-3">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
@@ -549,7 +549,7 @@ export default function WidgetLibraryPanel() {
               placeholder="Search widgets..."
               value={filters.search}
               onChange={e => setFilters({ ...filters, search: e.target.value })}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm"
             />
           </div>
 
@@ -558,7 +558,7 @@ export default function WidgetLibraryPanel() {
               <select
                 value={filters.category}
                 onChange={e => setFilters({ ...filters, category: e.target.value })}
-                className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
               >
                 {CATEGORIES.map(category => (
                   <option key={category} value={category}>
@@ -574,7 +574,7 @@ export default function WidgetLibraryPanel() {
                   const [sortBy, sortOrder] = e.target.value.split(':');
                   setFilters({ ...filters, sortBy: sortBy as any, sortOrder: sortOrder as any });
                 }}
-                className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
               >
                 {SORT_OPTIONS.map(option => (
                   <option key={option.value} value={option.value}>

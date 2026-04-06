@@ -947,14 +947,7 @@ export default function WidgetRenderer({
               {titleValue || 'Untitled Widget'}
             </h3>
           )}
-          <button
-            onClick={handleDelete}
-            className={`p-1 rounded text-gray-400 hover:text-red-500 transition-opacity duration-200 ml-auto ${
-              isSelected || isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <XMarkIcon className="w-4 h-4" />
-          </button>
+          {/* Delete button removed - use floating toolbar on hover instead */}
         </div>
       )}
 
